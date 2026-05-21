@@ -1,4 +1,15 @@
 package com.pluralsight.toppings;
 
-public class PremiumTopping extends Topping{
+abstract class PremiumTopping extends Topping{
+    private boolean hasExtra;
+
+    public PremiumTopping(String name, int size, boolean hasExtra) {
+        super(name, size);
+        this.hasExtra = hasExtra;
+    }
+
+    @Override
+    public double getPrice(){
+        return 0;
+    }
 }
