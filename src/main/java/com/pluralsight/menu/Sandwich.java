@@ -8,9 +8,9 @@ public class Sandwich implements IChargable{
     private boolean isTotasted;
     private List<Topping> toppings;
 
-    public Sandwich(String bread, boolean isTotasted, int size, List<Topping> toppings) {
+    public Sandwich(String bread, boolean isToasted, int size, List<Topping> toppings) {
         this.bread = bread;
-        this.isTotasted = isTotasted;
+        this.isTotasted = isToasted;
         this.size = size;
         this.toppings = toppings;
     }

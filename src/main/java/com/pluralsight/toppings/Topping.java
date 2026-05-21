@@ -2,7 +2,7 @@ package com.pluralsight.toppings;
 
 import com.pluralsight.menu.IChargable;
 
-abstract class Topping implements IChargable {
+public abstract class Topping implements IChargable {
     private String name;
     private int size;
 
