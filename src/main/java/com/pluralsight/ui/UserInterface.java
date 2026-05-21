@@ -1,5 +1,6 @@
 package com.pluralsight.ui;
 
+import com.pluralsight.menu.Drink;
 import com.pluralsight.menu.Sandwich;
 import com.pluralsight.toppings.Topping;
 
@@ -31,7 +32,7 @@ public class UserInterface {
 
                 switch (input) {
                     case 1 -> addSandwich();
-                    case 2 -> System.out.println("B");
+                    case 2 -> addDrink();
                     case 3 -> System.out.println("C");
                     case 4 -> System.out.println("D");
                     case 0 -> {
@@ -41,7 +42,8 @@ public class UserInterface {
             }
         }
     }
-    public void addSandwich(){
+
+    public Sandwich addSandwich(){
         while(true) {
             System.out.println("Please select your size");
             System.out.println("1) -> 4in  (5.50)");
@@ -136,6 +138,7 @@ public class UserInterface {
             scanner.nextLine();
         }
     }
+
     public boolean wantExtra(int topping,int x, int y){
         boolean extra = false;
         if(topping < x && topping > y){
@@ -147,4 +150,37 @@ public class UserInterface {
         }
         return extra;
     }
+
+    public Drink addDrink() {
+        String sodaSize = "";
+
+        System.out.println("What flavor soda would you like? Pepsi, Coke, Crush ect.");
+        System.out.print("Input: ");
+        String flavor = scanner.nextLine();
+
+        while (sodaSize.isEmpty()) {
+            System.out.println("Please select a size");
+            System.out.println("1) -> Small");
+            System.out.println("2) -> Medium");
+            System.out.println("3) -> Large");
+            System.out.println("0) -> Nevermind I dont want a drink");
+
+            int size = scanner.nextInt();
+            scanner.nextLine();
+
+            sodaSize = "";
+            switch (size) {
+                case 0 -> {
+                    return null;
+                }
+                case 1 -> sodaSize = "Small";
+                case 2 -> sodaSize = "Medium";
+                case 3 -> sodaSize = "Large";
+                default -> System.out.println("invalid input");
+            }
+        }
+        return new Drink(flavor, sodaSize);
+    }
+
+
 }
