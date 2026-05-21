@@ -1,14 +1,19 @@
 package com.pluralsight.ui;
 
+import com.pluralsight.menu.Chips;
 import com.pluralsight.menu.Drink;
+import com.pluralsight.menu.IChargable;
 import com.pluralsight.menu.Sandwich;
 import com.pluralsight.toppings.Topping;
 
 import java.sql.SQLOutput;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class UserInterface {
     private Scanner scanner = new Scanner(System.in);
+    private List<IChargable> order = new ArrayList<>();
     public void display(){
         System.out.println("Welcome!");
 
@@ -33,8 +38,8 @@ public class UserInterface {
                 switch (input) {
                     case 1 -> addSandwich();
                     case 2 -> addDrink();
-                    case 3 -> System.out.println("C");
-                    case 4 -> System.out.println("D");
+                    case 3 -> addChips();
+                    case 4 -> displayOrder();
                     case 0 -> {
                         return;
                     }
@@ -43,7 +48,7 @@ public class UserInterface {
         }
     }
 
-    public Sandwich addSandwich(){
+    public void addSandwich(){
         while(true) {
             System.out.println("Please select your size");
             System.out.println("1) -> 4in  (5.50)");
@@ -151,7 +156,7 @@ public class UserInterface {
         return extra;
     }
 
-    public Drink addDrink() {
+    public void addDrink() {
         String sodaSize = "";
 
         System.out.println("What flavor soda would you like? Pepsi, Coke, Crush ect.");
@@ -171,7 +176,7 @@ public class UserInterface {
             sodaSize = "";
             switch (size) {
                 case 0 -> {
-                    return null;
+                    return;
                 }
                 case 1 -> sodaSize = "Small";
                 case 2 -> sodaSize = "Medium";
@@ -179,8 +184,21 @@ public class UserInterface {
                 default -> System.out.println("invalid input");
             }
         }
-        return new Drink(flavor, sodaSize);
+        order.add(new Drink(flavor, sodaSize));
     }
+
+    public void addChips(){
+        System.out.println("What kind of chips would you like? Lays, Ruffles, Pringles ect.");
+        System.out.print("Input: ");
+        String flavor = scanner.nextLine();
+
+        order.add(new Chips(flavor));
+    }
+
+    public void displayOrder(){
+        order.forEach(System.out::println);
+    }
+
 
 
 }
