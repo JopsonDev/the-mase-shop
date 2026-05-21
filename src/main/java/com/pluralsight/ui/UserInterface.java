@@ -4,7 +4,7 @@ import com.pluralsight.menu.Chips;
 import com.pluralsight.menu.Drink;
 import com.pluralsight.menu.IChargable;
 import com.pluralsight.menu.Sandwich;
-import com.pluralsight.toppings.Topping;
+import com.pluralsight.toppings.*;
 
 import java.sql.SQLOutput;
 import java.util.ArrayList;
@@ -48,17 +48,40 @@ public class UserInterface {
         }
     }
 
-    public void addSandwich(){
+    public void addSandwich() {
         while(true) {
+            int size = addSize();
+            String bread = addBread();
+            Meat meat = addMeat(size);
+            Cheese cheese = addCheese(size);
+            List<Topping> toppings = addToppings(size);
+        }
+    }
+
+    public int addSize() {
+        while (true) {
             System.out.println("Please select your size");
-            System.out.println("1) -> 4in  (5.50)");
-            System.out.println("2) -> 8in  (7.00)");
-            System.out.println("3) -> 12in (8.50)");
+            System.out.println(" 4) -> 4in  (5.50)");
+            System.out.println(" 8) -> 8in  (7.00)");
+            System.out.println("12) -> 12in (8.50)");
             System.out.println("0) -> Nevermind I dont want a sandwich");
 
             int size = scanner.nextInt();
             scanner.nextLine();
 
+            if (size != 4 && size != 8 && size != 12 && size != 0) {
+                System.out.println("Invalid input");
+            } else if (size == 0) {
+                break;
+            } else {
+                return size;
+            }
+        }
+        return 0;
+    }
+
+    public String addBread() {
+        while (true) {
             System.out.println("Please select your bread");
             System.out.println("1) -> White");
             System.out.println("2) -> Wheat");
@@ -69,6 +92,20 @@ public class UserInterface {
             int bread = scanner.nextInt();
             scanner.nextLine();
 
+            if (bread != 0) {
+                List<String> breads = List.of("White", "Wheat", "Rye", "Wrap");
+                return breads.get(bread - 1);
+            } else {
+                return null;
+            }
+        }
+    }
+
+    public Meat addMeat(int size) {
+        List<String> meats = null;
+        int meat;
+        boolean hasExtraMeat = false;
+        while (true) {
             System.out.println("Premium Toppings");
             System.out.println("Please select your meat");
             System.out.println("1) -> Steak");
@@ -80,12 +117,25 @@ public class UserInterface {
             System.out.println("7) -> No more meat");
             System.out.println("0) -> Never mind I dont want a sandwich");
 
-            int meat = scanner.nextInt();
+            meat = scanner.nextInt();
             scanner.nextLine();
+            if (meat == 7) {
+                break;
+            } else if (meat == 0) {
+                return null;
+            }
+            meats = List.of("Steak", "Ham", "Salami", "Roast Beef", "Chicken", "Bacon");
+            hasExtraMeat = wantExtra(meat);
+            return new Meat(meats.get(meat - 1), size, hasExtraMeat);
+        }
+        return null;
+    }
 
-            //x and y determine the range of meats to choose from
-            boolean hasExtraMeat = wantExtra(meat, 7, 0);
-
+    public Cheese addCheese(int size) {
+        List<String> cheeses = null;
+        int cheese;
+        boolean hasExtraCheese = false;
+        while (true) {
             System.out.println("Premium Toppings");
             System.out.println("Please select your cheese");
             System.out.println("1) -> American");
@@ -95,12 +145,24 @@ public class UserInterface {
             System.out.println("5) -> No more cheese");
             System.out.println("0) -> Never mind I dont want a sandwich");
 
-            int cheese = scanner.nextInt();
+            cheese = scanner.nextInt();
             scanner.nextLine();
+            if (cheese == 5) {
+                break;
+            } else if (cheese == 0) {
+                return null;
+            }
+            cheeses = List.of("American", "Provolone", "Cheddar", "Swiss");
+            hasExtraCheese = wantExtra(cheese);
+            return new Cheese(cheeses.get(cheese - 1), size, hasExtraCheese);
+        }
+        return null;
+    }
 
-            boolean hasExtraCheese = wantExtra(cheese, 5, 0);
 
-
+    public List<Topping> addToppings(int size){
+        List<Topping> allTops = new ArrayList<>();
+        while(true) {
             System.out.println("Regular Toppings");
             System.out.println("Please select your toppings");
             System.out.println(" 1) -> Lettuce");
@@ -117,7 +179,16 @@ public class UserInterface {
 
             int regularToppings = scanner.nextInt();
             scanner.nextLine();
-
+            if (regularToppings == 10) {
+                break;
+            } else if (regularToppings == 0) {
+                return null;
+            }
+            List<String> rToppings = List.of("Lettuce", "Peppers", "Onions", "Tomatoes", "Jalapeños", "Cucumbers", "Pickles", "Guacamole", "Mushrooms");
+            RegularTopping rt = new RegularTopping(rToppings.get(regularToppings - 1), size);
+            allTops.add(rt);
+        }
+        while(true) {
             System.out.println("Sauces");
             System.out.println("Please select your sauce");
             System.out.println("1) -> Mayo");
@@ -132,6 +203,16 @@ public class UserInterface {
             int sauces = scanner.nextInt();
             scanner.nextLine();
 
+            if (sauces == 7) {
+                break;
+            } else if (sauces == 0) {
+                return null;
+            }
+            List<String> listOfSauces = List.of("Mayo", "Mustard", "Ketchup", "Ranch", "Thousand Island", "Vinaigrette");
+            Sauce s = new Sauce(listOfSauces.get(sauces - 1), size);
+            allTops.add(s);
+        }
+        while(true) {
             System.out.println("Sides");
             System.out.println("Please select your side");
             System.out.println("1) -> Au Jus");
@@ -141,18 +222,26 @@ public class UserInterface {
 
             int sides = scanner.nextInt();
             scanner.nextLine();
+
+            if (sides == 3) {
+                break;
+            } else if (sides == 0) {
+                return null;
+            }
+            List<String> listOfSides = List.of("Au Jus", "Sauce");
+            Side si = new Side(listOfSides.get(sides - 1), size);
+            allTops.add(si);
         }
+        return allTops;
     }
 
-    public boolean wantExtra(int topping,int x, int y){
+    public boolean wantExtra(int topping){
         boolean extra = false;
-        if(topping < x && topping > y){
             System.out.println("Would you like extra?(Y/N)");
             String input = scanner.nextLine();
             if(input.equalsIgnoreCase("Y")){
                 extra = true;
             }
-        }
         return extra;
     }
 
