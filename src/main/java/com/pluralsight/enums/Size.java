@@ -11,7 +11,7 @@ public enum Size {
         this.price = price;
     }
 
-    public double getPrice(Size size){
-        return size.price;
+    public double getPrice(){
+        return price;
     }
 }

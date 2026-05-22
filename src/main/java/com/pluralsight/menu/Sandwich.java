@@ -3,6 +3,7 @@ import com.pluralsight.enums.Bread;
 import com.pluralsight.enums.Size;
 import com.pluralsight.toppings.Topping;
 import java.util.List;
+import java.util.stream.DoubleStream;
 
 public class Sandwich implements IChargable{
     private Size size;
@@ -35,8 +36,11 @@ public class Sandwich implements IChargable{
 
     @Override
     public double getPrice() {
-        return 0;
+        double price = getSize().getPrice();
+        price += toppings.stream().mapToDouble(Topping::getPrice).sum();
+        return price;
     }
+
 
     @Override
     public String toString() {

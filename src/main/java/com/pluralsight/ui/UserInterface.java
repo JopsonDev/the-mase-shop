@@ -11,6 +11,7 @@ import com.pluralsight.toppings.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.DoubleStream;
 
 public class UserInterface {
     private Scanner scanner = new Scanner(System.in);
@@ -61,21 +62,19 @@ public class UserInterface {
                 return;
             }
             boolean isToasted = isToasted();
-            int meat = addMeat(size, allTops);
-            if(meat == 0){
+            if(!addMeat(size, allTops)){
                 return;
             }
-            int cheese = addCheese(size, allTops);
-            if(cheese == 0){
+            if(!addCheese(size, allTops)){
                 return;
             }
-            int toppings = addToppings(size, allTops);
-            if(toppings == 0){
+            if(!addToppings(size, allTops)){
                 return;
             }
             Sandwich sandwich = new Sandwich(bread, isToasted, size, allTops);
             System.out.println(sandwich);
             order.add(sandwich);
+            System.out.println(sandwich.getPrice());
 
             System.out.println("Add another?(Y/N)");
             if(scanner.nextLine().equalsIgnoreCase("N")){
@@ -151,7 +150,7 @@ public class UserInterface {
         return scanner.nextLine().equalsIgnoreCase("Y");
     }
 
-    public int addMeat(Size size, List<Topping> allTops) {
+    public boolean addMeat(Size size, List<Topping> allTops) {
         List<String> meats = null;
         int meat;
         boolean hasExtraMeat = false;
@@ -172,7 +171,7 @@ public class UserInterface {
             if (meat == 7) {
                 break;
             } else if (meat == 0) {
-                return 0;
+                return false;
             } else if (meat > 7 || meat < 0){
                 System.out.println("Invalid input");
             } else {
@@ -182,10 +181,10 @@ public class UserInterface {
                 allTops.add(m);
             }
         }
-        return 1;
+        return true;
     }
 
-    public int addCheese(Size size, List<Topping> allTops) {
+    public boolean addCheese(Size size, List<Topping> allTops) {
         List<String> cheeses = null;
         int cheese;
         boolean hasExtraCheese = false;
@@ -204,7 +203,7 @@ public class UserInterface {
             if (cheese == 5) {
                 break;
             } else if (cheese == 0) {
-                return 0;
+                return false;
             }  else if (cheese > 5 || cheese < 0){
             System.out.println("Invalid input");
             } else {
@@ -214,10 +213,10 @@ public class UserInterface {
                 allTops.add(c);
             }
         }
-        return 1;
+        return true;
     }
 
-    public int addToppings(Size size, List<Topping> allTops){
+    public boolean addToppings(Size size, List<Topping> allTops){
         while(true) {
             System.out.println("Regular Toppings");
             System.out.println("Please select your toppings");
@@ -238,7 +237,7 @@ public class UserInterface {
             if (regularToppings == 10) {
                 break;
             } else if (regularToppings == 0) {
-                return 0;
+                return false;
             } else if (regularToppings > 10 || regularToppings < 0){
             System.out.println("Invalid input");
             } else {
@@ -265,7 +264,7 @@ public class UserInterface {
             if (sauces == 7) {
                 break;
             } else if (sauces == 0) {
-                return 0;
+                return false;
             } else if (sauces > 7 || sauces < 0){
                 System.out.println("Invalid input");
             } else {
@@ -288,7 +287,7 @@ public class UserInterface {
             if (sides == 3) {
                 break;
             } else if (sides == 0) {
-                return 0;
+                return false;
             } else if (sides > 7 || sides < 0){
                 System.out.println("Invalid input");
             } else {
@@ -297,7 +296,7 @@ public class UserInterface {
                 allTops.add(si);
             }
         }
-        return 1;
+        return true;
     }
 
     public boolean wantExtra() {
