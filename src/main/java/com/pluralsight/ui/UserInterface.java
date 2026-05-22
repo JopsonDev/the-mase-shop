@@ -1,6 +1,7 @@
 package com.pluralsight.ui;
 
 import com.pluralsight.enums.Bread;
+import com.pluralsight.enums.Size;
 import com.pluralsight.menu.Chips;
 import com.pluralsight.menu.Drink;
 import com.pluralsight.menu.IChargable;
@@ -51,8 +52,8 @@ public class UserInterface {
     public void addSandwich() {
         while(true) {
             List<Topping> allTops = new ArrayList<>();
-            int size = addSize();
-            if (size == 0){
+            Size size = addSize();
+            if (size == null){
                 return;
             }
             Bread bread = addBread();
@@ -72,7 +73,7 @@ public class UserInterface {
             if(toppings == 0){
                 return;
             }
-            Sandwich sandwich = new Sandwich(bread.getDisplayName(), isToasted, size, allTops);
+            Sandwich sandwich = new Sandwich(bread, isToasted, size, allTops);
             System.out.println(sandwich);
             order.add(sandwich);
 
@@ -83,26 +84,33 @@ public class UserInterface {
         }
     }
 
-    public int addSize() {
+    public Size addSize() {
         while (true) {
             System.out.println("Please select your size");
-            System.out.println(" 4) -> 4in  (5.50)");
-            System.out.println(" 8) -> 8in  (7.00)");
-            System.out.println("12) -> 12in (8.50)");
+            System.out.println("1) -> 4in  (5.50)");
+            System.out.println("2) -> 8in  (7.00)");
+            System.out.println("3) -> 12in (8.50)");
             System.out.println("0) -> Nevermind I dont want a sandwich");
 
             int size = scanner.nextInt();
             scanner.nextLine();
 
-            if (size != 4 && size != 8 && size != 12 && size != 0) {
-                System.out.println("Invalid input");
-            } else if (size == 0) {
-                break;
-            } else {
-                return size;
+            switch (size) {
+                case 1 -> {
+                    return Size.SMALL;
+                }
+                case 2 -> {
+                    return Size.MEDIUM;
+                }
+                case 3 -> {
+                    return Size.LARGE;
+                }
+                case 0 -> {
+                    return null;
+                }
+                default -> System.out.println("Invalid Input");
             }
         }
-        return 0;
     }
 
     public Bread addBread() {
@@ -143,7 +151,7 @@ public class UserInterface {
         return scanner.nextLine().equalsIgnoreCase("Y");
     }
 
-    public int addMeat(int size, List<Topping> allTops) {
+    public int addMeat(Size size, List<Topping> allTops) {
         List<String> meats = null;
         int meat;
         boolean hasExtraMeat = false;
@@ -165,16 +173,19 @@ public class UserInterface {
                 break;
             } else if (meat == 0) {
                 return 0;
+            } else if (meat > 7 || meat < 0){
+                System.out.println("Invalid input");
+            } else {
+                meats = List.of("Steak", "Ham", "Salami", "Roast Beef", "Chicken", "Bacon");
+                hasExtraMeat = wantExtra();
+                Meat m = new Meat(meats.get(meat - 1), size, hasExtraMeat);
+                allTops.add(m);
             }
-            meats = List.of("Steak", "Ham", "Salami", "Roast Beef", "Chicken", "Bacon");
-            hasExtraMeat = wantExtra();
-            Meat m = new Meat(meats.get(meat - 1), size, hasExtraMeat);
-            allTops.add(m);
         }
         return 1;
     }
 
-    public int addCheese(int size, List<Topping> allTops) {
+    public int addCheese(Size size, List<Topping> allTops) {
         List<String> cheeses = null;
         int cheese;
         boolean hasExtraCheese = false;
@@ -194,16 +205,19 @@ public class UserInterface {
                 break;
             } else if (cheese == 0) {
                 return 0;
+            }  else if (cheese > 5 || cheese < 0){
+            System.out.println("Invalid input");
+            } else {
+                cheeses = List.of("American", "Provolone", "Cheddar", "Swiss");
+                hasExtraCheese = wantExtra();
+                Cheese c = new Cheese(cheeses.get(cheese - 1), size, hasExtraCheese);
+                allTops.add(c);
             }
-            cheeses = List.of("American", "Provolone", "Cheddar", "Swiss");
-            hasExtraCheese = wantExtra();
-            Cheese c = new Cheese(cheeses.get(cheese - 1), size, hasExtraCheese);
-            allTops.add(c);
         }
         return 1;
     }
 
-    public int addToppings(int size, List<Topping> allTops){
+    public int addToppings(Size size, List<Topping> allTops){
         while(true) {
             System.out.println("Regular Toppings");
             System.out.println("Please select your toppings");
@@ -225,10 +239,13 @@ public class UserInterface {
                 break;
             } else if (regularToppings == 0) {
                 return 0;
+            } else if (regularToppings > 10 || regularToppings < 0){
+            System.out.println("Invalid input");
+            } else {
+                List<String> rToppings = List.of("Lettuce", "Peppers", "Onions", "Tomatoes", "Jalapeños", "Cucumbers", "Pickles", "Guacamole", "Mushrooms");
+                RegularTopping rt = new RegularTopping(rToppings.get(regularToppings - 1), size);
+                allTops.add(rt);
             }
-            List<String> rToppings = List.of("Lettuce", "Peppers", "Onions", "Tomatoes", "Jalapeños", "Cucumbers", "Pickles", "Guacamole", "Mushrooms");
-            RegularTopping rt = new RegularTopping(rToppings.get(regularToppings - 1), size);
-            allTops.add(rt);
         }
         while(true) {
             System.out.println("Sauces");
@@ -249,10 +266,13 @@ public class UserInterface {
                 break;
             } else if (sauces == 0) {
                 return 0;
+            } else if (sauces > 7 || sauces < 0){
+                System.out.println("Invalid input");
+            } else {
+                List<String> listOfSauces = List.of("Mayo", "Mustard", "Ketchup", "Ranch", "Thousand Island", "Vinaigrette");
+                Sauce s = new Sauce(listOfSauces.get(sauces - 1), size);
+                allTops.add(s);
             }
-            List<String> listOfSauces = List.of("Mayo", "Mustard", "Ketchup", "Ranch", "Thousand Island", "Vinaigrette");
-            Sauce s = new Sauce(listOfSauces.get(sauces - 1), size);
-            allTops.add(s);
         }
         while(true) {
             System.out.println("Sides");
@@ -269,10 +289,13 @@ public class UserInterface {
                 break;
             } else if (sides == 0) {
                 return 0;
+            } else if (sides > 7 || sides < 0){
+                System.out.println("Invalid input");
+            } else {
+                List<String> listOfSides = List.of("Au Jus", "Sauce");
+                Side si = new Side(listOfSides.get(sides - 1), size);
+                allTops.add(si);
             }
-            List<String> listOfSides = List.of("Au Jus", "Sauce");
-            Side si = new Side(listOfSides.get(sides - 1), size);
-            allTops.add(si);
         }
         return 1;
     }

@@ -1,21 +1,23 @@
 package com.pluralsight.menu;
+import com.pluralsight.enums.Bread;
+import com.pluralsight.enums.Size;
 import com.pluralsight.toppings.Topping;
 import java.util.List;
 
 public class Sandwich implements IChargable{
-    private int size;
-    private String bread;
+    private Size size;
+    private Bread bread;
     private boolean isTotasted;
     private List<Topping> toppings;
 
-    public Sandwich(String bread, boolean isToasted, int size, List<Topping> toppings) {
+    public Sandwich(Bread bread, boolean isToasted, Size size, List<Topping> toppings) {
         this.bread = bread;
         this.isTotasted = isToasted;
         this.size = size;
         this.toppings = toppings;
     }
 
-    public String getBread() {
+    public Bread getBread() {
         return bread;
     }
 
@@ -23,7 +25,7 @@ public class Sandwich implements IChargable{
         return isTotasted;
     }
 
-    public int getSize() {
+    public Size getSize() {
         return size;
     }
 

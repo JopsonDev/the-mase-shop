@@ -1,12 +1,13 @@
 package com.pluralsight.toppings;
 
+import com.pluralsight.enums.Size;
 import com.pluralsight.menu.IChargable;
 
 public abstract class Topping implements IChargable {
     private String name;
-    private int size;
+    private Size size;
 
-    public Topping(String name, int size) {
+    public Topping(String name, Size size) {
         this.name = name;
         this.size = size;
     }
@@ -15,7 +16,7 @@ public abstract class Topping implements IChargable {
         return name;
     }
 
-    public int getSize() {
+    public Size getSize() {
         return size;
     }
 

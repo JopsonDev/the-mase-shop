@@ -1,8 +1,10 @@
 package com.pluralsight.toppings;
 
+import com.pluralsight.enums.Size;
+
 public class Sauce extends Topping{
 
-    public Sauce(String name, int size) {
+    public Sauce(String name, Size size) {
         super(name, size);
     }
 
