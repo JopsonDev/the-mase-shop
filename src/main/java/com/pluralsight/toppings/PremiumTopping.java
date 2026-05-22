@@ -12,4 +12,11 @@ abstract class PremiumTopping extends Topping{
     public double getPrice(){
         return 0;
     }
+
+    @Override
+    public String toString() {
+        return "PremiumTopping{" +
+                "hasExtra=" + getName() + hasExtra +
+                '}';
+    }
 }

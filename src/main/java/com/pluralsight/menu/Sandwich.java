@@ -35,4 +35,14 @@ public class Sandwich implements IChargable{
     public double getPrice() {
         return 0;
     }
+
+    @Override
+    public String toString() {
+        return "Sandwich{" +
+                "bread ='" + bread + '\'' +
+                ", size =" + size +
+                ", isTotasted =" + isTotasted +
+                ", toppings =" + toppings +
+                '}';
+    }
 }

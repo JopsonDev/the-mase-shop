@@ -49,12 +49,37 @@ public class UserInterface {
     }
 
     public void addSandwich() {
+        List<Topping> allTops = new ArrayList<>();
         while(true) {
             int size = addSize();
+            if (size == 0){
+                return;
+            }
             String bread = addBread();
-            Meat meat = addMeat(size);
-            Cheese cheese = addCheese(size);
-            List<Topping> toppings = addToppings(size);
+            if(bread == null){
+                return;
+            }
+            boolean isToasted = isToasted();
+            int meat = addMeat(size, allTops);
+            if(meat == 0){
+                return;
+            }
+            int cheese = addCheese(size, allTops);
+            if(cheese == 0){
+                return;
+            }
+            int toppings = addToppings(size, allTops);
+            if(toppings == 0){
+                return;
+            }
+            Sandwich sandwich = new Sandwich(bread, isToasted, size, allTops);
+            System.out.println(sandwich);
+            order.add(sandwich);
+
+            System.out.println("Add another?(Y/N)");
+            if(scanner.nextLine().equalsIgnoreCase("N")){
+                return;
+            }
         }
     }
 
@@ -101,7 +126,12 @@ public class UserInterface {
         }
     }
 
-    public Meat addMeat(int size) {
+    public boolean isToasted(){
+        System.out.println("Would you like that toasted(Y/N)");
+        return scanner.nextLine().equalsIgnoreCase("Y");
+    }
+
+    public int addMeat(int size, List<Topping> allTops) {
         List<String> meats = null;
         int meat;
         boolean hasExtraMeat = false;
@@ -122,16 +152,17 @@ public class UserInterface {
             if (meat == 7) {
                 break;
             } else if (meat == 0) {
-                return null;
+                return 0;
             }
             meats = List.of("Steak", "Ham", "Salami", "Roast Beef", "Chicken", "Bacon");
             hasExtraMeat = wantExtra(meat);
-            return new Meat(meats.get(meat - 1), size, hasExtraMeat);
+            Meat m = new Meat(meats.get(meat - 1), size, hasExtraMeat);
+            allTops.add(m);
         }
-        return null;
+        return 1;
     }
 
-    public Cheese addCheese(int size) {
+    public int addCheese(int size, List<Topping> allTops) {
         List<String> cheeses = null;
         int cheese;
         boolean hasExtraCheese = false;
@@ -150,18 +181,18 @@ public class UserInterface {
             if (cheese == 5) {
                 break;
             } else if (cheese == 0) {
-                return null;
+                return 0;
             }
             cheeses = List.of("American", "Provolone", "Cheddar", "Swiss");
             hasExtraCheese = wantExtra(cheese);
-            return new Cheese(cheeses.get(cheese - 1), size, hasExtraCheese);
+            Cheese c = new Cheese(cheeses.get(cheese - 1), size, hasExtraCheese);
+            allTops.add(c);
         }
-        return null;
+        return 1;
     }
 
 
-    public List<Topping> addToppings(int size){
-        List<Topping> allTops = new ArrayList<>();
+    public int addToppings(int size, List<Topping> allTops){
         while(true) {
             System.out.println("Regular Toppings");
             System.out.println("Please select your toppings");
@@ -182,7 +213,7 @@ public class UserInterface {
             if (regularToppings == 10) {
                 break;
             } else if (regularToppings == 0) {
-                return null;
+                return 0;
             }
             List<String> rToppings = List.of("Lettuce", "Peppers", "Onions", "Tomatoes", "Jalapeños", "Cucumbers", "Pickles", "Guacamole", "Mushrooms");
             RegularTopping rt = new RegularTopping(rToppings.get(regularToppings - 1), size);
@@ -206,7 +237,7 @@ public class UserInterface {
             if (sauces == 7) {
                 break;
             } else if (sauces == 0) {
-                return null;
+                return 0;
             }
             List<String> listOfSauces = List.of("Mayo", "Mustard", "Ketchup", "Ranch", "Thousand Island", "Vinaigrette");
             Sauce s = new Sauce(listOfSauces.get(sauces - 1), size);
@@ -226,13 +257,13 @@ public class UserInterface {
             if (sides == 3) {
                 break;
             } else if (sides == 0) {
-                return null;
+                return 0;
             }
             List<String> listOfSides = List.of("Au Jus", "Sauce");
             Side si = new Side(listOfSides.get(sides - 1), size);
             allTops.add(si);
         }
-        return allTops;
+        return 1;
     }
 
     public boolean wantExtra(int topping){

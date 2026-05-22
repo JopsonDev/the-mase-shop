@@ -11,8 +11,25 @@ public abstract class Topping implements IChargable {
         this.size = size;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
     @Override
     public double getPrice() {
         return 0;
     }
+
+    @Override
+    public String toString() {
+        return "Topping{" +
+                "name='" + name + '\'' +
+                '}';
+    }
 }
+
+
