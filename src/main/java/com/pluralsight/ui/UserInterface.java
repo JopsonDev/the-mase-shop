@@ -1,12 +1,12 @@
 package com.pluralsight.ui;
 
+import com.pluralsight.enums.Bread;
 import com.pluralsight.menu.Chips;
 import com.pluralsight.menu.Drink;
 import com.pluralsight.menu.IChargable;
 import com.pluralsight.menu.Sandwich;
 import com.pluralsight.toppings.*;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -49,13 +49,13 @@ public class UserInterface {
     }
 
     public void addSandwich() {
-        List<Topping> allTops = new ArrayList<>();
         while(true) {
+            List<Topping> allTops = new ArrayList<>();
             int size = addSize();
             if (size == 0){
                 return;
             }
-            String bread = addBread();
+            Bread bread = addBread();
             if(bread == null){
                 return;
             }
@@ -72,7 +72,7 @@ public class UserInterface {
             if(toppings == 0){
                 return;
             }
-            Sandwich sandwich = new Sandwich(bread, isToasted, size, allTops);
+            Sandwich sandwich = new Sandwich(bread.getDisplayName(), isToasted, size, allTops);
             System.out.println(sandwich);
             order.add(sandwich);
 
@@ -105,7 +105,7 @@ public class UserInterface {
         return 0;
     }
 
-    public String addBread() {
+    public Bread addBread() {
         while (true) {
             System.out.println("Please select your bread");
             System.out.println("1) -> White");
@@ -117,11 +117,23 @@ public class UserInterface {
             int bread = scanner.nextInt();
             scanner.nextLine();
 
-            if (bread != 0) {
-                List<String> breads = List.of("White", "Wheat", "Rye", "Wrap");
-                return breads.get(bread - 1);
-            } else {
-                return null;
+            switch(bread){
+                case 1 -> {
+                    return Bread.WHITE;
+                }
+                case 2 -> {
+                    return Bread.WHEAT;
+                }
+                case 3 -> {
+                    return Bread.RYE;
+                }
+                case 4 -> {
+                    return Bread.WRAP;
+                }
+                case 0 -> {
+                    return null;
+                }
+                default -> System.out.println("Invalid Input");
             }
         }
     }
@@ -155,7 +167,7 @@ public class UserInterface {
                 return 0;
             }
             meats = List.of("Steak", "Ham", "Salami", "Roast Beef", "Chicken", "Bacon");
-            hasExtraMeat = wantExtra(meat);
+            hasExtraMeat = wantExtra();
             Meat m = new Meat(meats.get(meat - 1), size, hasExtraMeat);
             allTops.add(m);
         }
@@ -184,13 +196,12 @@ public class UserInterface {
                 return 0;
             }
             cheeses = List.of("American", "Provolone", "Cheddar", "Swiss");
-            hasExtraCheese = wantExtra(cheese);
+            hasExtraCheese = wantExtra();
             Cheese c = new Cheese(cheeses.get(cheese - 1), size, hasExtraCheese);
             allTops.add(c);
         }
         return 1;
     }
-
 
     public int addToppings(int size, List<Topping> allTops){
         while(true) {
@@ -266,14 +277,9 @@ public class UserInterface {
         return 1;
     }
 
-    public boolean wantExtra(int topping){
-        boolean extra = false;
-            System.out.println("Would you like extra?(Y/N)");
-            String input = scanner.nextLine();
-            if(input.equalsIgnoreCase("Y")){
-                extra = true;
-            }
-        return extra;
+    public boolean wantExtra() {
+        System.out.println("Would you like extra?(Y/N)");
+        return scanner.nextLine().equalsIgnoreCase("Y");
     }
 
     public void addDrink() {
