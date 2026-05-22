@@ -1,14 +1,20 @@
 package com.pluralsight.enums;
 
 public enum Size {
-    SMALL(5.50),
-    MEDIUM(7.00),
-    LARGE(8.50);
+    SMALL(5.50, "Small"),
+    MEDIUM(7.00, "Medium"),
+    LARGE(8.50, "Large");
 
     private final double price;
+    private final String displayName;
 
-    Size(double price) {
+    Size(double price, String displayName) {
         this.price = price;
+        this.displayName = displayName;
+    }
+
+    public String getDisplayName() {
+        return displayName;
     }
 
     public double getPrice(){

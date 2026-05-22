@@ -11,7 +11,6 @@ import com.pluralsight.toppings.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.stream.DoubleStream;
 
 public class UserInterface {
     private Scanner scanner = new Scanner(System.in);
@@ -287,7 +286,7 @@ public class UserInterface {
                 break;
             } else if (sides == 0) {
                 return false;
-            } else if (sides > 7 || sides < 0){
+            } else if (sides > 3 || sides < 0){
                 System.out.println("Invalid input");
             } else {
                 List<String> listOfSides = List.of("Au Jus", "Sauce");
@@ -346,7 +345,5 @@ public class UserInterface {
         order.forEach(System.out::println);
         System.out.println(order.stream().mapToDouble(IChargable::getPrice).sum());
     }
-
-
 
 }

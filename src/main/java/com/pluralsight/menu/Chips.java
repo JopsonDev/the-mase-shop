@@ -15,4 +15,9 @@ public class Chips implements IChargable{
     public double getPrice() {
         return 1.50;
     }
+
+    @Override
+    public String toString() {
+        return flavor + " $" + getPrice();
+    }
 }

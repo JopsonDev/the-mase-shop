@@ -21,8 +21,10 @@ abstract class PremiumTopping extends Topping{
 
     @Override
     public String toString() {
-        return "PremiumTopping{" +
-                "hasExtra=" + getName() + hasExtra +
-                '}';
+        String extra = "x";
+        if(hasExtra){
+            extra = "✓";
+        }
+        return getName() + " Extra: " + extra;
     }
 }

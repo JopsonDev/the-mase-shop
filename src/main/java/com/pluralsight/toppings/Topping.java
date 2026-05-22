@@ -27,9 +27,7 @@ public abstract class Topping implements IChargable {
 
     @Override
     public String toString() {
-        return "Topping{" +
-                "name='" + name + '\'' +
-                '}';
+        return name;
     }
 }
 

@@ -28,4 +28,9 @@ public class Drink implements IChargable{
         }
         return price;
     }
+
+    @Override
+    public String toString() {
+        return "Drink: " + size + ", " + flavor + " $" +getPrice();
+    }
 }
