@@ -6,6 +6,7 @@ import com.pluralsight.menu.Chips;
 import com.pluralsight.menu.Drink;
 import com.pluralsight.menu.IChargable;
 import com.pluralsight.menu.Sandwich;
+import com.pluralsight.order.Order;
 import com.pluralsight.order.ReceiptHandler;
 import com.pluralsight.toppings.*;
 
@@ -15,7 +16,9 @@ import java.util.Scanner;
 
 public class UserInterface {
     private Scanner scanner = new Scanner(System.in);
-    private List<IChargable> order = new ArrayList<>();
+    private Order order = new Order(1);
+
+
     public void display(){
         System.out.println("Welcome!");
 
@@ -73,7 +76,7 @@ public class UserInterface {
             }
             Sandwich sandwich = new Sandwich(bread, isToasted, size, allTops);
             System.out.println(sandwich);
-            order.add(sandwich);
+            order.addItems(sandwich);
 
             System.out.println("Add another?(Y/N)");
             if(scanner.nextLine().equalsIgnoreCase("N")){
@@ -331,7 +334,7 @@ public class UserInterface {
                 default -> System.out.println("invalid input");
             }
         }
-        order.add(new Drink(flavor, sodaSize));
+        order.addItems(new Drink(flavor, sodaSize));
     }
 
     public void addChips(){
@@ -339,13 +342,18 @@ public class UserInterface {
         System.out.print("Input: ");
         String flavor = scanner.nextLine();
 
-        order.add(new Chips(flavor));
+        order.addItems(new Chips(flavor));
     }
 
     public void displayOrder(){
-        ReceiptHandler r = new ReceiptHandler();
-        int x = 1000 + order.size();
-        r.fileReceipt(order, x);
+        order.printOrder();
+        System.out.println("$" + String.format("%,.2f", order.calculatePrice()));
+        System.out.println("Finish and pay?(Y/N)");
+        String input = scanner.nextLine();
+        if(input.equalsIgnoreCase("Y")){
+            order.saveReceipt();
+            order.clearOrder();
+        }
     }
 
 }

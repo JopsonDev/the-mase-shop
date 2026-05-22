@@ -31,6 +31,6 @@ public class Drink implements IChargable{
 
     @Override
     public String toString() {
-        return "Drink: " + size + ", " + flavor + " $" +getPrice();
+        return String.format("Drink: %s Size: %s $%.2f",flavor, size, getPrice());
     }
 }

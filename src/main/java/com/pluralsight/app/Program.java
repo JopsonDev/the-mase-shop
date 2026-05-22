@@ -10,6 +10,8 @@ public class Program {
     //need to format toStrigns to show right price
     //need to add whether its totasted to tostring
     //place holder ID made for files
+    //need to stop multi files being writen during one order
+    //present prices for things before selecting drinks and chips
 
 
 

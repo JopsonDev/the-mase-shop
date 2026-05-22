@@ -18,6 +18,6 @@ public class Chips implements IChargable{
 
     @Override
     public String toString() {
-        return flavor + " $" + getPrice();
+        return String.format("%s $%.2f",flavor, getPrice());
     }
 }

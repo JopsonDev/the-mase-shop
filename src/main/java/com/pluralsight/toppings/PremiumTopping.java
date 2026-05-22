@@ -25,6 +25,6 @@ abstract class PremiumTopping extends Topping{
         if(hasExtra){
             extra = "✓";
         }
-        return getName() + " Extra: " + extra;
+        return String.format(getName() + " Extra: " + extra);
     }
 }
