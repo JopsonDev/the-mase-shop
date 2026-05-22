@@ -7,10 +7,11 @@ public class Program {
         UserInterface app = new UserInterface();
         app.display();
     }
-    //making a sandwhich doesnt loop correctly
-    //meat and cheese dont save correctly need to put in list
-    //cant get out of loop
-    // returns dont work
-    //need to get if toasted or not
+    //need to format toStrigns to show right price
+    //need to add whether its totasted to tostring
+    //place holder ID made for files
+
+
+
 
 }

@@ -6,6 +6,7 @@ import com.pluralsight.menu.Chips;
 import com.pluralsight.menu.Drink;
 import com.pluralsight.menu.IChargable;
 import com.pluralsight.menu.Sandwich;
+import com.pluralsight.order.ReceiptHandler;
 import com.pluralsight.toppings.*;
 
 import java.util.ArrayList;
@@ -342,8 +343,9 @@ public class UserInterface {
     }
 
     public void displayOrder(){
-        order.forEach(System.out::println);
-        System.out.println(order.stream().mapToDouble(IChargable::getPrice).sum());
+        ReceiptHandler r = new ReceiptHandler();
+        int x = 1000 + order.size();
+        r.fileReceipt(order, x);
     }
 
 }

@@ -3,6 +3,7 @@ package com.pluralsight.order;
 import com.pluralsight.menu.IChargable;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Order {
     private List<IChargable> items;
@@ -21,5 +22,10 @@ public class Order {
     }
 
     public void printOrder(){
+    }
+
+    @Override
+    public String toString() {
+        return items.stream().map(IChargable::toString).collect(Collectors.joining("\n"));
     }
 }
