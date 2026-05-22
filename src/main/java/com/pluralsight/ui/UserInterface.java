@@ -74,7 +74,6 @@ public class UserInterface {
             Sandwich sandwich = new Sandwich(bread, isToasted, size, allTops);
             System.out.println(sandwich);
             order.add(sandwich);
-            System.out.println(sandwich.getPrice());
 
             System.out.println("Add another?(Y/N)");
             if(scanner.nextLine().equalsIgnoreCase("N")){
@@ -345,6 +344,7 @@ public class UserInterface {
 
     public void displayOrder(){
         order.forEach(System.out::println);
+        System.out.println(order.stream().mapToDouble(IChargable::getPrice).sum());
     }
 
 
