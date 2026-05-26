@@ -5,7 +5,7 @@ import com.pluralsight.ui.UserInterface;
 public class Program {
     public static void main(String[] args) {
         UserInterface app = new UserInterface();
-        app.display();
+        app.display(app);
     }
     //place holder ID made for files
     //need to fix incorrect entry when making a sandwich DONE *2
@@ -14,6 +14,8 @@ public class Program {
     //receipt writer acting up didnt write full file
     //need to add Enums to Class digram
     //need to add SandwichBuilder to class digram
+
+    //need overhaul on sandwhich builder and need to fix it
 
 
 

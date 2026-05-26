@@ -12,10 +12,8 @@ import java.util.List;
 import java.util.Scanner;
 
 public class SandwichBuilder {
-    private Scanner scanner = new Scanner(System.in);
 
-    public MenuAction addSandwich(Order o) {
-        UserInterface ui = new UserInterface();
+    public MenuAction addSandwich(Order o, UserInterface ui) {
         MenuAction action = MenuAction.CONTINUE;
 
         while(action == MenuAction.CONTINUE) {
@@ -47,9 +45,9 @@ public class SandwichBuilder {
         return action;
     }
 
-    public Size determinSize(){
+    public Size determinSize(Scanner scanner){
         while(true) {
-            int size = caseNumberCheck();
+            int size = caseNumberCheck(scanner);
 
             switch (size) {
                 case 1 -> {
@@ -69,9 +67,9 @@ public class SandwichBuilder {
         }
     }
 
-    public Bread determinBread(){
+    public Bread determinBread(Scanner scanner){
         while(true) {
-            int bread = caseNumberCheck();
+            int bread = caseNumberCheck(scanner);
 
             switch (bread) {
                 case 1 -> {
@@ -94,7 +92,7 @@ public class SandwichBuilder {
         }
     }
 
-    public MenuAction determineMeat(int meat, List<Topping> allTops, Size size){
+    public MenuAction determineMeat(int meat, List<Topping> allTops, Size size,Scanner scanner){
         UserInterface ui = new UserInterface();
         List<String> meats;
         boolean hasExtraMeat;
@@ -104,7 +102,7 @@ public class SandwichBuilder {
         } else if (meat == 0) {
             return MenuAction.EXIT;
         } else {meats = List.of("Steak", "Ham", "Salami", "Roast Beef", "Chicken", "Bacon");
-            hasExtraMeat = wantExtra();
+            hasExtraMeat = wantExtra(scanner);
             Meat m = new Meat(meats.get(meat - 1), size, hasExtraMeat);
             allTops.add(m);System.out.println("Added!");
         }
@@ -112,7 +110,7 @@ public class SandwichBuilder {
         return MenuAction.CONTINUE;
     }
 
-    public MenuAction determineCheese(int cheese, Size size, List<Topping> allTops){
+    public MenuAction determineCheese(int cheese, Size size, List<Topping> allTops, Scanner scanner){
         List<String> cheeses;
         boolean hasExtraCheese;
 
@@ -122,7 +120,7 @@ public class SandwichBuilder {
             return MenuAction.EXIT;
         } else {
             cheeses = List.of("American", "Provolone", "Cheddar", "Swiss");
-            hasExtraCheese = wantExtra();
+            hasExtraCheese = wantExtra(scanner);
             Cheese c = new Cheese(cheeses.get(cheese - 1), size, hasExtraCheese);
             allTops.add(c);
         }
@@ -174,14 +172,14 @@ public class SandwichBuilder {
         return MenuAction.CONTINUE;
     }
 
-    public boolean wantExtra() {
+    public boolean wantExtra(Scanner scanner) {
         scanner.nextLine();
         System.out.println("Would you like extra?(Y/N)");
         String input = scanner.nextLine();
         return (input.equalsIgnoreCase("Y"));
     }
 
-    public int checkNumbers(int maxRange) {
+    public int checkNumbers(int maxRange,Scanner scanner) {
         int input = -2;
         while (input < -1) {
             if (!scanner.hasNextInt()) {
@@ -202,7 +200,7 @@ public class SandwichBuilder {
         return input;
     }
 
-    public int caseNumberCheck(){
+    public int caseNumberCheck(Scanner scanner){
         int input;
         if(!scanner.hasNextInt()){
             input = -1;

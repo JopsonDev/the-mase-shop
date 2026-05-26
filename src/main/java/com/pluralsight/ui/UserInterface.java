@@ -17,7 +17,7 @@ public class UserInterface {
     private final Order order = new Order(1);
     private final SandwichBuilder s = new SandwichBuilder();
 
-    public void display(){
+    public void display(UserInterface ui){
         System.out.println("Welcome!");
 
 
@@ -39,11 +39,12 @@ public class UserInterface {
                 int input = caseNumberCheck();
 
                 switch (input) {
-                    case 1 -> addItemsSandwiches();
+                    case 1 -> addItemsSandwiches(ui);
                     case 2 -> addDrink();
                     case 3 -> addChips();
                     case 4 -> displayOrder();
                     case 0 -> {
+                        scanner.close();
                         return;
                     }
                     default -> System.out.println("Invalid input");
@@ -51,9 +52,9 @@ public class UserInterface {
             }
         }
 
-    public void addItemsSandwiches() {
+    public void addItemsSandwiches(UserInterface ui) {
         while(true) {
-            MenuAction action = s.addSandwich(order);
+            MenuAction action = s.addSandwich(order, ui);
 
             if(action == MenuAction.EXIT){
                 return;
@@ -74,7 +75,7 @@ public class UserInterface {
             System.out.println("3) -> 12in (8.50)");
             System.out.println("0) -> Nevermind I dont want a sandwich");
 
-            return s.determinSize();
+            return s.determinSize(scanner);
         }
     }
 
@@ -87,7 +88,7 @@ public class UserInterface {
             System.out.println("4) -> Wrap");
             System.out.println("0) -> Never mind I dont want a sandwich");
 
-            return s.determinBread();
+            return s.determinBread(scanner);
         }
     }
 
@@ -112,8 +113,8 @@ public class UserInterface {
             System.out.println("7) -> No more meat");
             System.out.println("0) -> Never mind I dont want a sandwich");
 
-            int meat = s.checkNumbers(7);
-            action = s.determineMeat(meat, allTops, size);
+            int meat = s.checkNumbers(7,scanner);
+            action = s.determineMeat(meat, allTops, size, scanner);
         }
         return action;
     }
@@ -132,8 +133,8 @@ public class UserInterface {
             System.out.println("5) -> No more cheese");
             System.out.println("0) -> Never mind I dont want a sandwich");
 
-            int cheese = s.checkNumbers(5);
-            action = s.determineCheese(cheese, size, allTops);
+            int cheese = s.checkNumbers(5, scanner);
+            action = s.determineCheese(cheese, size, allTops, scanner);
         }
         return action;
     }
@@ -154,7 +155,7 @@ public class UserInterface {
             System.out.println(" 9) -> Mushrooms");
             System.out.println("10) -> No more toppings");
             System.out.println(" 0) -> Never mind I dont want a sandwich");
-            int rT = s.checkNumbers(10);
+            int rT = s.checkNumbers(10, scanner);
             action = s.determineRegularToppings(rT, size, allTops);
             if (action == MenuAction.EXIT){
                 return action;
@@ -173,7 +174,7 @@ public class UserInterface {
             System.out.println("7) -> No more sauce");
             System.out.println("0) -> Never mind I dont want a sandwich");
 
-            int sauces = s.checkNumbers(7);
+            int sauces = s.checkNumbers(7, scanner);
             action = s.determineSauces(sauces, size, allTops);
             if (action == MenuAction.EXIT){
                 return action;
@@ -188,7 +189,7 @@ public class UserInterface {
             System.out.println("3) -> No more sauce");
             System.out.println("0) -> Never mind I dont want a sandwich");
 
-            int sides = s.checkNumbers(3);
+            int sides = s.checkNumbers(3, scanner);
 
             action = s.determineSides(sides, size, allTops);
             if (action == MenuAction.EXIT){
