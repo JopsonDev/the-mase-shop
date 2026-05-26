@@ -10,6 +10,7 @@ import com.pluralsight.order.Order;
 import com.pluralsight.order.ReceiptHandler;
 import com.pluralsight.toppings.*;
 
+import java.awt.image.SinglePixelPackedSampleModel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -22,14 +23,14 @@ public class UserInterface {
     public void display(){
         System.out.println("Welcome!");
 
-        while(true) {
-            System.out.println("1) -> Place Order");
-            System.out.println("0) -> Quit");
 
-            if(scanner.nextInt() == 0){
-                return;
-            }
-            scanner.nextLine();
+        System.out.println("1) -> Place Order");
+        System.out.println("0) -> Quit");
+
+        if(caseNumberCheck() != 1){
+            System.out.println("Exiting program: Have a great day!");
+            return;
+        }
             while(true) {
                 System.out.println("Home Menu Please Make a Selection");
                 System.out.println("1) -> Add Sandwich");
@@ -37,8 +38,8 @@ public class UserInterface {
                 System.out.println("3) -> Add Chips");
                 System.out.println("4) -> Checkout");
                 System.out.println("0) -> Quit");
-                int input = scanner.nextInt();
-                scanner.nextLine();
+
+                int input = caseNumberCheck();
 
                 switch (input) {
                     case 1 -> addSandwich();
@@ -48,10 +49,10 @@ public class UserInterface {
                     case 0 -> {
                         return;
                     }
+                    default -> System.out.println("Invalid input");
                 }
             }
         }
-    }
 
     public void addSandwich() {
         while(true) {
@@ -93,8 +94,7 @@ public class UserInterface {
             System.out.println("3) -> 12in (8.50)");
             System.out.println("0) -> Nevermind I dont want a sandwich");
 
-            int size = scanner.nextInt();
-            scanner.nextLine();
+            int size = caseNumberCheck();
 
             switch (size) {
                 case 1 -> {
@@ -123,8 +123,7 @@ public class UserInterface {
             System.out.println("4) -> Wrap");
             System.out.println("0) -> Never mind I dont want a sandwich");
 
-            int bread = scanner.nextInt();
-            scanner.nextLine();
+            int bread = caseNumberCheck();
 
             switch(bread){
                 case 1 -> {
@@ -153,9 +152,9 @@ public class UserInterface {
     }
 
     public boolean addMeat(Size size, List<Topping> allTops) {
-        List<String> meats = null;
+        List<String> meats;
         int meat;
-        boolean hasExtraMeat = false;
+        boolean hasExtraMeat;
         while (true) {
             System.out.println("Premium Toppings");
             System.out.println("Meats: $1.00/$2.00/$3.00");
@@ -170,14 +169,11 @@ public class UserInterface {
             System.out.println("7) -> No more meat");
             System.out.println("0) -> Never mind I dont want a sandwich");
 
-            meat = scanner.nextInt();
-            scanner.nextLine();
-            if (meat == 7) {
+            meat = checkNumbers(7);
+            if (meat == 1) {
                 break;
             } else if (meat == 0) {
                 return false;
-            } else if (meat > 7 || meat < 0){
-                System.out.println("Invalid input");
             } else {
                 meats = List.of("Steak", "Ham", "Salami", "Roast Beef", "Chicken", "Bacon");
                 hasExtraMeat = wantExtra();
@@ -189,9 +185,9 @@ public class UserInterface {
     }
 
     public boolean addCheese(Size size, List<Topping> allTops) {
-        List<String> cheeses = null;
+        List<String> cheeses;
         int cheese;
-        boolean hasExtraCheese = false;
+        boolean hasExtraCheese;
         while (true) {
             System.out.println("Premium Toppings");
             System.out.println("Cheese: $.75/$1.50/$2.25");
@@ -204,14 +200,11 @@ public class UserInterface {
             System.out.println("5) -> No more cheese");
             System.out.println("0) -> Never mind I dont want a sandwich");
 
-            cheese = scanner.nextInt();
-            scanner.nextLine();
-            if (cheese == 5) {
+            cheese = checkNumbers(5);
+            if (cheese == 1) {
                 break;
             } else if (cheese == 0) {
                 return false;
-            }  else if (cheese > 5 || cheese < 0){
-            System.out.println("Invalid input");
             } else {
                 cheeses = List.of("American", "Provolone", "Cheddar", "Swiss");
                 hasExtraCheese = wantExtra();
@@ -238,14 +231,11 @@ public class UserInterface {
             System.out.println("10) -> No more toppings");
             System.out.println(" 0) -> Never mind I dont want a sandwich");
 
-            int regularToppings = scanner.nextInt();
-            scanner.nextLine();
-            if (regularToppings == 10) {
+            int regularToppings = checkNumbers(10);
+            if (regularToppings == 1) {
                 break;
             } else if (regularToppings == 0) {
                 return false;
-            } else if (regularToppings > 10 || regularToppings < 0){
-            System.out.println("Invalid input");
             } else {
                 List<String> rToppings = List.of("Lettuce", "Peppers", "Onions", "Tomatoes", "Jalapeños", "Cucumbers", "Pickles", "Guacamole", "Mushrooms");
                 RegularTopping rt = new RegularTopping(rToppings.get(regularToppings - 1), size);
@@ -264,15 +254,11 @@ public class UserInterface {
             System.out.println("7) -> No more sauce");
             System.out.println("0) -> Never mind I dont want a sandwich");
 
-            int sauces = scanner.nextInt();
-            scanner.nextLine();
-
-            if (sauces == 7) {
+            int sauces = checkNumbers(7);
+            if (sauces == 1) {
                 break;
             } else if (sauces == 0) {
                 return false;
-            } else if (sauces > 7 || sauces < 0){
-                System.out.println("Invalid input");
             } else {
                 List<String> listOfSauces = List.of("Mayo", "Mustard", "Ketchup", "Ranch", "Thousand Island", "Vinaigrette");
                 Sauce s = new Sauce(listOfSauces.get(sauces - 1), size);
@@ -287,15 +273,11 @@ public class UserInterface {
             System.out.println("3) -> No more sauce");
             System.out.println("0) -> Never mind I dont want a sandwich");
 
-            int sides = scanner.nextInt();
-            scanner.nextLine();
-
-            if (sides == 3) {
+            int sides = checkNumbers(7);
+            if (sides == 1) {
                 break;
             } else if (sides == 0) {
                 return false;
-            } else if (sides > 3 || sides < 0){
-                System.out.println("Invalid input");
             } else {
                 List<String> listOfSides = List.of("Au Jus", "Sauce");
                 Side si = new Side(listOfSides.get(sides - 1), size);
@@ -324,8 +306,7 @@ public class UserInterface {
             System.out.println("3) -> Large");
             System.out.println("0) -> Nevermind I dont want a drink");
 
-            int size = scanner.nextInt();
-            scanner.nextLine();
+            int size = caseNumberCheck();
 
             sodaSize = "";
             switch (size) {
@@ -361,4 +342,36 @@ public class UserInterface {
         }
     }
 
+    public int checkNumbers(int maxRange) {
+        int input = -1;
+        while (input < 0) {
+            if (!scanner.hasNextInt()) {
+                scanner.nextLine();
+            } else {
+                input = scanner.nextInt();
+                scanner.nextLine();
+            }
+            if (input == maxRange) {
+                return 1;
+            } else if (input == 0) {
+                return 0;
+            } else if (input > maxRange || input < 0) {
+                System.out.println("Invalid input");
+                System.out.print("Input: ");
+            }
+        }
+        return input;
+    }
+
+    public int caseNumberCheck(){
+        int input;
+        if(!scanner.hasNextInt()){
+            input = -1;
+            scanner.nextLine();
+        } else {
+            input = scanner.nextInt();
+            scanner.nextLine();
+        }
+        return input;
+    }
 }
