@@ -40,7 +40,7 @@ public class UserInterface {
                 int input = caseNumberCheck();
 
                 switch (input) {
-                    case 1 -> addSandwich();
+                    case 1 -> addItemsSandwiches();
                     case 2 -> addDrink();
                     case 3 -> addChips();
                     case 4 -> displayOrder();
@@ -52,16 +52,14 @@ public class UserInterface {
             }
         }
 
-    public void addSandwich() {
+    public void addItemsSandwiches() {
         while(true) {
-            Sandwich userSandwich = s.addSandwich();
-            if (userSandwich == null){
+            MenuAction action = s.addSandwich(order);
+
+            if(action == MenuAction.EXIT){
                 return;
-            } else {
-                order.addItems(userSandwich);
             }
 
-            System.out.println(userSandwich);
             System.out.println("Add another?(Y/N)");
             if(scanner.nextLine().equalsIgnoreCase("N")){
                 return;

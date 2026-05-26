@@ -14,30 +14,37 @@ import java.util.Scanner;
 public class SandwichBuilder {
     private Scanner scanner = new Scanner(System.in);
 
-    public Sandwich addSandwich() {
+    public MenuAction addSandwich(Order o) {
         UserInterface ui = new UserInterface();
-        while(true) {
+        MenuAction action = MenuAction.CONTINUE;
+
+        while(action == MenuAction.CONTINUE) {
             List<Topping> allTops = new ArrayList<>();
             Size size = ui.addSize();
+
             if (size == null){
-                return null;
+                return MenuAction.EXIT;
             }
             Bread bread = ui.addBread();
             if(bread == null){
-                return null;
+                return MenuAction.EXIT;
             }
             boolean isToasted = ui.isToasted();
             if(ui.addMeat(allTops,size).equals(MenuAction.EXIT)){
-                return null;
+                return MenuAction.EXIT;
             }
             if(ui.addCheese(allTops, size).equals(MenuAction.EXIT)){
-                return null;
+                return MenuAction.EXIT;
             }
-            if(!ui.addToppings(allTops, size).equals(MenuAction.EXIT)){
-                return null;
+            if(ui.addToppings(allTops, size).equals(MenuAction.EXIT)){
+                return MenuAction.EXIT;
             }
-            return new Sandwich(bread, isToasted, size, allTops);
+            Sandwich wich = new Sandwich(bread, isToasted, size, allTops);
+            System.out.println(wich);
+            o.addItems(wich);
+            action = MenuAction.BREAK;
         }
+        return action;
     }
 
     public Size determinSize(){
