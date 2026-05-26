@@ -5,11 +5,10 @@ import com.pluralsight.enums.MenuAction;
 import com.pluralsight.enums.Size;
 import com.pluralsight.menu.Chips;
 import com.pluralsight.menu.Drink;
-import com.pluralsight.menu.Sandwich;
 import com.pluralsight.order.Order;
 import com.pluralsight.order.SandwichBuilder;
 import com.pluralsight.toppings.*;
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Scanner;
 
@@ -79,7 +78,6 @@ public class UserInterface {
         }
     }
 
-
     public Bread addBread() {
         while (true) {
             System.out.println("Please select your bread");
@@ -135,7 +133,7 @@ public class UserInterface {
             System.out.println("0) -> Never mind I dont want a sandwich");
 
             int cheese = s.checkNumbers(5);
-            action = s.determinCheese(cheese, size, allTops);
+            action = s.determineCheese(cheese, size, allTops);
         }
         return action;
     }
@@ -176,7 +174,7 @@ public class UserInterface {
             System.out.println("0) -> Never mind I dont want a sandwich");
 
             int sauces = s.checkNumbers(7);
-            action = s.determinSauces(sauces, size, allTops);
+            action = s.determineSauces(sauces, size, allTops);
             if (action == MenuAction.EXIT){
                 return action;
             }
@@ -192,14 +190,13 @@ public class UserInterface {
 
             int sides = s.checkNumbers(3);
 
-            action = s.determinSides(sides, size, allTops);
+            action = s.determineSides(sides, size, allTops);
             if (action == MenuAction.EXIT){
                 return action;
             }
         }
         return action;
     }
-
 
     public void addDrink() {
         String sodaSize = "";

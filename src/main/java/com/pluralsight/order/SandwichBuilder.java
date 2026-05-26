@@ -112,7 +112,7 @@ public class SandwichBuilder {
         return MenuAction.CONTINUE;
     }
 
-    public MenuAction determinCheese(int cheese, Size size, List<Topping> allTops){
+    public MenuAction determineCheese(int cheese, Size size, List<Topping> allTops){
         List<String> cheeses;
         boolean hasExtraCheese;
 
@@ -145,7 +145,7 @@ public class SandwichBuilder {
         return MenuAction.CONTINUE;
     }
 
-    public MenuAction determinSauces(int sauces, Size size, List<Topping> allTops){
+    public MenuAction determineSauces(int sauces, Size size, List<Topping> allTops){
 
         if (sauces == -1) {
             return MenuAction.BREAK;
@@ -160,7 +160,7 @@ public class SandwichBuilder {
         return MenuAction.CONTINUE;
     }
 
-    public MenuAction determinSides(int sides, Size size, List<Topping> allTops){
+    public MenuAction determineSides(int sides, Size size, List<Topping> allTops){
         if (sides == -1) {
             return MenuAction.BREAK;
         } else if (sides == 0) {
@@ -196,6 +196,7 @@ public class SandwichBuilder {
             } else if (input > maxRange || input < 0) {
                 System.out.println("Invalid input");
                 System.out.print("Input: ");
+                input = -2;
             }
         }
         return input;

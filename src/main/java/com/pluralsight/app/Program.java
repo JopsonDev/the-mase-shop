@@ -8,9 +8,12 @@ public class Program {
         app.display();
     }
     //place holder ID made for files
-    //need to fix incorrect entry when making a sandwich DONE
+    //need to fix incorrect entry when making a sandwich DONE *2
     //add special sandwich menu
     //app design
+    //receipt writer acting up didnt write full file
+    //need to add Enums to Class digram
+    //need to add SandwichBuilder to class digram
 
 
 
