@@ -158,6 +158,8 @@ public class UserInterface {
         boolean hasExtraMeat = false;
         while (true) {
             System.out.println("Premium Toppings");
+            System.out.println("Meats: $1.00/$2.00/$3.00");
+            System.out.println("Extra: $.50/$1.00/$1.50");
             System.out.println("Please select your meat");
             System.out.println("1) -> Steak");
             System.out.println("2) -> Ham");
@@ -192,6 +194,8 @@ public class UserInterface {
         boolean hasExtraCheese = false;
         while (true) {
             System.out.println("Premium Toppings");
+            System.out.println("Cheese: $.75/$1.50/$2.25");
+            System.out.println("Extra: $.30/$.60/$.90");
             System.out.println("Please select your cheese");
             System.out.println("1) -> American");
             System.out.println("2) -> Provolone");
@@ -328,9 +332,9 @@ public class UserInterface {
                 case 0 -> {
                     return;
                 }
-                case 1 -> sodaSize = "Small";
-                case 2 -> sodaSize = "Medium";
-                case 3 -> sodaSize = "Large";
+                case 1 -> sodaSize = "Small ($2.00) ";
+                case 2 -> sodaSize = "Medium ($2.50)";
+                case 3 -> sodaSize = "Large ($3.00)";
                 default -> System.out.println("invalid input");
             }
         }
@@ -338,6 +342,7 @@ public class UserInterface {
     }
 
     public void addChips(){
+        System.out.println("Chips: $1.50");
         System.out.println("What kind of chips would you like? Lays, Ruffles, Pringles ect.");
         System.out.print("Input: ");
         String flavor = scanner.nextLine();

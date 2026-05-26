@@ -50,6 +50,6 @@ public class Sandwich implements IChargable{
         } else {
             toast = "No";
         }
-        return String.format("Sandwich:%nSize: %s%nBread: %s%nToasted: %s%nToppings: %s%nPrice: $%,.2f", size.getDisplayName(), bread.getDisplayName(), toast, toppings, getPrice());
+        return String.format("Sandwich: $%,.2f%nSize: %s%nBread: %s%nToasted: %s%nToppings: %s", getPrice(), size.getDisplayName(), bread.getDisplayName(), toast, toppings);
     }
 }

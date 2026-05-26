@@ -17,7 +17,11 @@ public class Cheese extends PremiumTopping{
             case LARGE -> price = 2.25;
         }
         if(isHasExtra()){
-            price *= 2;
+            switch (getSize()){
+                case SMALL -> price += .30;
+                case MEDIUM -> price += .60;
+                case LARGE -> price += .90;
+            }
         }
         return price;
     }
