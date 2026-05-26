@@ -1,9 +1,11 @@
 package com.pluralsight.menu;
 import com.pluralsight.enums.Bread;
 import com.pluralsight.enums.Size;
-import com.pluralsight.toppings.Topping;
+import com.pluralsight.toppings.*;
+import com.pluralsight.ui.UserInterface;
+
 import java.util.List;
-import java.util.stream.DoubleStream;
+import java.util.Scanner;
 
 public class Sandwich implements IChargable{
     private Size size;
@@ -16,6 +18,10 @@ public class Sandwich implements IChargable{
         this.isTotasted = isToasted;
         this.size = size;
         this.toppings = toppings;
+    }
+
+    public Sandwich(){
+
     }
 
     public Bread getBread() {

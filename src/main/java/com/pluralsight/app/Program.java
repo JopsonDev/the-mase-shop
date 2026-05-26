@@ -8,7 +8,9 @@ public class Program {
         app.display();
     }
     //place holder ID made for files
-    //need to fix incorrect entry when making a sandwich
+    //need to fix incorrect entry when making a sandwich DONE
+    //add special sandwich menu
+    //app design
 
 
 

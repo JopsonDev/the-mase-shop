@@ -1,24 +1,22 @@
 package com.pluralsight.ui;
 
 import com.pluralsight.enums.Bread;
+import com.pluralsight.enums.MenuAction;
 import com.pluralsight.enums.Size;
 import com.pluralsight.menu.Chips;
 import com.pluralsight.menu.Drink;
-import com.pluralsight.menu.IChargable;
 import com.pluralsight.menu.Sandwich;
 import com.pluralsight.order.Order;
-import com.pluralsight.order.ReceiptHandler;
+import com.pluralsight.order.SandwichBuilder;
 import com.pluralsight.toppings.*;
-
-import java.awt.image.SinglePixelPackedSampleModel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class UserInterface {
-    private Scanner scanner = new Scanner(System.in);
-    private Order order = new Order(1);
-
+    private final Scanner scanner = new Scanner(System.in);
+    private final Order order = new Order(1);
+    private final SandwichBuilder s = new SandwichBuilder();
 
     public void display(){
         System.out.println("Welcome!");
@@ -56,29 +54,14 @@ public class UserInterface {
 
     public void addSandwich() {
         while(true) {
-            List<Topping> allTops = new ArrayList<>();
-            Size size = addSize();
-            if (size == null){
+            Sandwich userSandwich = s.addSandwich();
+            if (userSandwich == null){
                 return;
+            } else {
+                order.addItems(userSandwich);
             }
-            Bread bread = addBread();
-            if(bread == null){
-                return;
-            }
-            boolean isToasted = isToasted();
-            if(!addMeat(size, allTops)){
-                return;
-            }
-            if(!addCheese(size, allTops)){
-                return;
-            }
-            if(!addToppings(size, allTops)){
-                return;
-            }
-            Sandwich sandwich = new Sandwich(bread, isToasted, size, allTops);
-            System.out.println(sandwich);
-            order.addItems(sandwich);
 
+            System.out.println(userSandwich);
             System.out.println("Add another?(Y/N)");
             if(scanner.nextLine().equalsIgnoreCase("N")){
                 return;
@@ -94,25 +77,10 @@ public class UserInterface {
             System.out.println("3) -> 12in (8.50)");
             System.out.println("0) -> Nevermind I dont want a sandwich");
 
-            int size = caseNumberCheck();
-
-            switch (size) {
-                case 1 -> {
-                    return Size.SMALL;
-                }
-                case 2 -> {
-                    return Size.MEDIUM;
-                }
-                case 3 -> {
-                    return Size.LARGE;
-                }
-                case 0 -> {
-                    return null;
-                }
-                default -> System.out.println("Invalid Input");
-            }
+            return s.determinSize();
         }
     }
+
 
     public Bread addBread() {
         while (true) {
@@ -123,26 +91,7 @@ public class UserInterface {
             System.out.println("4) -> Wrap");
             System.out.println("0) -> Never mind I dont want a sandwich");
 
-            int bread = caseNumberCheck();
-
-            switch(bread){
-                case 1 -> {
-                    return Bread.WHITE;
-                }
-                case 2 -> {
-                    return Bread.WHEAT;
-                }
-                case 3 -> {
-                    return Bread.RYE;
-                }
-                case 4 -> {
-                    return Bread.WRAP;
-                }
-                case 0 -> {
-                    return null;
-                }
-                default -> System.out.println("Invalid Input");
-            }
+            return s.determinBread();
         }
     }
 
@@ -151,11 +100,9 @@ public class UserInterface {
         return scanner.nextLine().equalsIgnoreCase("Y");
     }
 
-    public boolean addMeat(Size size, List<Topping> allTops) {
-        List<String> meats;
-        int meat;
-        boolean hasExtraMeat;
-        while (true) {
+    public MenuAction addMeat(List<Topping> allTops, Size size) {
+        MenuAction action = MenuAction.CONTINUE;
+        while (action == MenuAction.CONTINUE) {
             System.out.println("Premium Toppings");
             System.out.println("Meats: $1.00/$2.00/$3.00");
             System.out.println("Extra: $.50/$1.00/$1.50");
@@ -169,26 +116,15 @@ public class UserInterface {
             System.out.println("7) -> No more meat");
             System.out.println("0) -> Never mind I dont want a sandwich");
 
-            meat = checkNumbers(7);
-            if (meat == 1) {
-                break;
-            } else if (meat == 0) {
-                return false;
-            } else {
-                meats = List.of("Steak", "Ham", "Salami", "Roast Beef", "Chicken", "Bacon");
-                hasExtraMeat = wantExtra();
-                Meat m = new Meat(meats.get(meat - 1), size, hasExtraMeat);
-                allTops.add(m);
-            }
+            int meat = s.checkNumbers(7);
+            action = s.determineMeat(meat, allTops, size);
         }
-        return true;
+        return action;
     }
 
-    public boolean addCheese(Size size, List<Topping> allTops) {
-        List<String> cheeses;
-        int cheese;
-        boolean hasExtraCheese;
-        while (true) {
+    public MenuAction addCheese(List<Topping> allTops, Size size) {
+        MenuAction action = MenuAction.CONTINUE;
+        while (action == MenuAction.CONTINUE) {
             System.out.println("Premium Toppings");
             System.out.println("Cheese: $.75/$1.50/$2.25");
             System.out.println("Extra: $.30/$.60/$.90");
@@ -200,23 +136,15 @@ public class UserInterface {
             System.out.println("5) -> No more cheese");
             System.out.println("0) -> Never mind I dont want a sandwich");
 
-            cheese = checkNumbers(5);
-            if (cheese == 1) {
-                break;
-            } else if (cheese == 0) {
-                return false;
-            } else {
-                cheeses = List.of("American", "Provolone", "Cheddar", "Swiss");
-                hasExtraCheese = wantExtra();
-                Cheese c = new Cheese(cheeses.get(cheese - 1), size, hasExtraCheese);
-                allTops.add(c);
-            }
+            int cheese = s.checkNumbers(5);
+            action = s.determinCheese(cheese, size, allTops);
         }
-        return true;
+        return action;
     }
 
-    public boolean addToppings(Size size, List<Topping> allTops){
-        while(true) {
+    public MenuAction addToppings(List<Topping> allTops, Size size){
+        MenuAction action = MenuAction.CONTINUE;
+        while (action == MenuAction.CONTINUE) {
             System.out.println("Regular Toppings");
             System.out.println("Please select your toppings");
             System.out.println(" 1) -> Lettuce");
@@ -230,19 +158,14 @@ public class UserInterface {
             System.out.println(" 9) -> Mushrooms");
             System.out.println("10) -> No more toppings");
             System.out.println(" 0) -> Never mind I dont want a sandwich");
-
-            int regularToppings = checkNumbers(10);
-            if (regularToppings == 1) {
-                break;
-            } else if (regularToppings == 0) {
-                return false;
-            } else {
-                List<String> rToppings = List.of("Lettuce", "Peppers", "Onions", "Tomatoes", "Jalapeños", "Cucumbers", "Pickles", "Guacamole", "Mushrooms");
-                RegularTopping rt = new RegularTopping(rToppings.get(regularToppings - 1), size);
-                allTops.add(rt);
+            int rT = s.checkNumbers(10);
+            action = s.determineRegularToppings(rT, size, allTops);
+            if (action == MenuAction.EXIT){
+                return action;
             }
         }
-        while(true) {
+        action = MenuAction.CONTINUE;
+        while (action == MenuAction.CONTINUE) {
             System.out.println("Sauces");
             System.out.println("Please select your sauce");
             System.out.println("1) -> Mayo");
@@ -254,18 +177,14 @@ public class UserInterface {
             System.out.println("7) -> No more sauce");
             System.out.println("0) -> Never mind I dont want a sandwich");
 
-            int sauces = checkNumbers(7);
-            if (sauces == 1) {
-                break;
-            } else if (sauces == 0) {
-                return false;
-            } else {
-                List<String> listOfSauces = List.of("Mayo", "Mustard", "Ketchup", "Ranch", "Thousand Island", "Vinaigrette");
-                Sauce s = new Sauce(listOfSauces.get(sauces - 1), size);
-                allTops.add(s);
+            int sauces = s.checkNumbers(7);
+            action = s.determinSauces(sauces, size, allTops);
+            if (action == MenuAction.EXIT){
+                return action;
             }
         }
-        while(true) {
+        action = MenuAction.CONTINUE;
+        while (action == MenuAction.CONTINUE) {
             System.out.println("Sides");
             System.out.println("Please select your side");
             System.out.println("1) -> Au Jus");
@@ -273,24 +192,16 @@ public class UserInterface {
             System.out.println("3) -> No more sauce");
             System.out.println("0) -> Never mind I dont want a sandwich");
 
-            int sides = checkNumbers(7);
-            if (sides == 1) {
-                break;
-            } else if (sides == 0) {
-                return false;
-            } else {
-                List<String> listOfSides = List.of("Au Jus", "Sauce");
-                Side si = new Side(listOfSides.get(sides - 1), size);
-                allTops.add(si);
+            int sides = s.checkNumbers(3);
+
+            action = s.determinSides(sides, size, allTops);
+            if (action == MenuAction.EXIT){
+                return action;
             }
         }
-        return true;
+        return action;
     }
 
-    public boolean wantExtra() {
-        System.out.println("Would you like extra?(Y/N)");
-        return scanner.nextLine().equalsIgnoreCase("Y");
-    }
 
     public void addDrink() {
         String sodaSize = "";
@@ -340,27 +251,6 @@ public class UserInterface {
             order.saveReceipt();
             order.clearOrder();
         }
-    }
-
-    public int checkNumbers(int maxRange) {
-        int input = -1;
-        while (input < 0) {
-            if (!scanner.hasNextInt()) {
-                scanner.nextLine();
-            } else {
-                input = scanner.nextInt();
-                scanner.nextLine();
-            }
-            if (input == maxRange) {
-                return 1;
-            } else if (input == 0) {
-                return 0;
-            } else if (input > maxRange || input < 0) {
-                System.out.println("Invalid input");
-                System.out.print("Input: ");
-            }
-        }
-        return input;
     }
 
     public int caseNumberCheck(){
