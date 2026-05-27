@@ -11,23 +11,22 @@ import java.util.List;
 public class SandwichBuilder {
 
     public Sandwich signaturePick(int input, Order o, Size size, boolean isToasted, boolean eM, boolean eC){
-        while(true) { //infinite loop
-            switch (input) {
-                case 1 -> {
-                    return o.bltOrder(size, isToasted, eM, eC);
-                }
-                case 2 -> {
-                    return o.cheeseSteak(size, isToasted, eM, eC);
-                }
-                case 3 -> {
-                    return o.chickenWrap(size, isToasted, eM, eC);
-                }
-                case 0 -> {
-                    return null;
-                }
-                default -> System.out.println("Invalid Input");
+        switch (input) {
+            case 1 -> {
+                return o.bltOrder(size, isToasted, eM, eC);
             }
+            case 2 -> {
+                return o.cheeseSteak(size, isToasted, eM, eC);
+            }
+            case 3 -> {
+                return o.chickenWrap(size, isToasted, eM, eC);
+            }
+            case 0 -> {
+                return null;
+            }
+            default -> System.out.println("No sandwiches listed under that input returning to main menu.");
         }
+        return null;
     }
 
     public Size determineSize(int size){
