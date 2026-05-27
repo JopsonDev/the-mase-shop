@@ -18,9 +18,11 @@ public class UserInterface {
     private final Scanner scanner = new Scanner(System.in);
     private final Order order = new Order(1);
     private final SandwichBuilder s = new SandwichBuilder();
+    private final Header h = new Header();
+    private final Utilities u = new Utilities();
 
     public void display(){
-        menu();
+        h.menu();
 
         System.out.println("Welcome!");
 
@@ -28,12 +30,12 @@ public class UserInterface {
         System.out.println("1) -> Place Order");
         System.out.println("0) -> Quit");
 
-        if(readIntInput() != 1){
+        if(u.readIntInput(scanner) != 1){
             System.out.println("Exiting program: Have a great day!");
             return;
         }
             while(true) {
-                header();
+                h.header();
                 System.out.println("Home Menu Please Make a Selection");
                 System.out.println("1) -> Add Sandwich");
                 System.out.println("2) -> Add Drink");
@@ -42,7 +44,7 @@ public class UserInterface {
                 System.out.println("5) -> Checkout");
                 System.out.println("0) -> Quit");
 
-                int input = readIntInput();
+                int input = u.readIntInput(scanner);
 
                 switch (input) {
                     case 1 -> addSandwich();
@@ -60,7 +62,7 @@ public class UserInterface {
         }
 
     public MenuAction addSandwich() {
-        sandwichHeader();
+        h.sandwichHeader();
         MenuAction action = MenuAction.CONTINUE;
         while(action == MenuAction.CONTINUE) {
             List<Topping> allTops = new ArrayList<>();
@@ -69,20 +71,25 @@ public class UserInterface {
             if (size == Size.QUIT){
                 return MenuAction.EXIT;
             }
+
             Bread bread = addBread();
             if(bread == Bread.QUIT){
                 return MenuAction.EXIT;
             }
+
             boolean isToasted = isToasted();
             if(addMeat(allTops,size).equals(MenuAction.EXIT)){
                 return MenuAction.EXIT;
             }
+
             if(addCheese(allTops, size).equals(MenuAction.EXIT)){
                 return MenuAction.EXIT;
             }
+
             if(addToppings(allTops, size).equals(MenuAction.EXIT)){
                 return MenuAction.EXIT;
             }
+
             Sandwich wich = new Sandwich(bread, isToasted, size, allTops);
             System.out.println(wich);
             order.addItems(wich);
@@ -104,7 +111,7 @@ public class UserInterface {
             System.out.println("3) -> 12in");
             System.out.println("0) -> Never mind I dont want a sandwich");
 
-            int choice = readIntInput();
+            int choice = u.readIntInput(scanner);
             Size size = s.determineSize(choice);
 
             if(size != null){
@@ -122,7 +129,7 @@ public class UserInterface {
             System.out.println("4) -> Wrap");
             System.out.println("0) -> Never mind I dont want a sandwich");
 
-            int choice = readIntInput();
+            int choice = u.readIntInput(scanner);
             Bread bread = s.determineBread(choice);
 
             if(bread != null){
@@ -153,7 +160,7 @@ public class UserInterface {
             System.out.println("0) -> Never mind I dont want a sandwich");
 
             boolean extra = false;
-            int meat = validateMenuChoice(7);
+            int meat = u.validateMenuChoice(7, scanner);
             if(meat != -1 && meat != 0) {
                 extra = wantExtra("meat");
             }
@@ -177,7 +184,7 @@ public class UserInterface {
             System.out.println("0) -> Never mind I dont want a sandwich");
 
             boolean extra = false;
-            int cheese = validateMenuChoice(5);
+            int cheese = u.validateMenuChoice(5, scanner);
             if(cheese != -1 && cheese != 0) {
                 extra = wantExtra("cheese");
             }
@@ -207,7 +214,7 @@ public class UserInterface {
             System.out.println(" 9) -> Mushrooms");
             System.out.println("10) -> No more toppings");
             System.out.println(" 0) -> Never mind I dont want a sandwich");
-            int rT = validateMenuChoice(10);
+            int rT = u.validateMenuChoice(10, scanner);
             action = s.determineRegularToppings(rT, size, allTops);
             if (action == MenuAction.EXIT){
                 return action;
@@ -226,7 +233,7 @@ public class UserInterface {
             System.out.println("7) -> No more sauce");
             System.out.println("0) -> Never mind I dont want a sandwich");
 
-            int sauces = validateMenuChoice(7);
+            int sauces = u.validateMenuChoice(7, scanner);
             action = s.determineSauces(sauces, size, allTops);
             if (action == MenuAction.EXIT){
                 return action;
@@ -241,7 +248,7 @@ public class UserInterface {
             System.out.println("3) -> No more sauce");
             System.out.println("0) -> Never mind I dont want a sandwich");
 
-            int sides = validateMenuChoice(3);
+            int sides = u.validateMenuChoice(3, scanner);
 
             action = s.determineSides(sides, size, allTops);
             if (action == MenuAction.EXIT){
@@ -252,7 +259,7 @@ public class UserInterface {
     }
 
     public void addDrink() {
-        drinksHeader();
+        h.drinksHeader();
         String sodaSize = "";
 
         System.out.println("What flavor soda would you like? Pepsi, Coke, Crush ect.");
@@ -267,7 +274,7 @@ public class UserInterface {
             System.out.println("3) -> Large");
             System.out.println("0) -> Nevermind I dont want a drink");
 
-            int size = readIntInput();
+            int size = u.readIntInput(scanner);
 
             sodaSize = "";
             switch (size) {
@@ -284,7 +291,7 @@ public class UserInterface {
     }
 
     public void addChips(){
-        chipsHeader();
+        h.chipsHeader();
         System.out.println("Chips: $1.50");
         System.out.println("What kind of chips would you like? Lays, Ruffles, Pringles ect.");
         System.out.print("Input: ");
@@ -294,7 +301,7 @@ public class UserInterface {
     }
 
     public void checkout(){
-        checkoutHeader();
+        h.checkoutHeader();
         order.printOrder();
         System.out.println("$" + String.format("%,.2f", order.calculatePrice()));
         System.out.println("Finish and pay?(Y/N)");
@@ -306,7 +313,7 @@ public class UserInterface {
     }
 
     public void signatureSandwich(){
-        sandwichHeader();
+        h.sandwichHeader();
         System.out.println("Please Select your sandwich");
         System.out.println("1) -> BLT");
         System.out.println("2) -> CheeseSteak");
@@ -331,90 +338,5 @@ public class UserInterface {
 
     }
 
-    public int readIntInput(){
-        int input;
-        if(!scanner.hasNextInt()){
-            input = -1;
-            scanner.nextLine();
-        } else {
-            input = scanner.nextInt();
-            scanner.nextLine();
-        }
-        return input;
-    }
 
-    public int validateMenuChoice(int maxRange) {
-        int input = -2;
-        while (input < -1) {
-
-            if (!scanner.hasNextInt()) {
-                scanner.nextLine();
-            } else {
-                input = scanner.nextInt();
-                scanner.nextLine();
-            }
-            if (input == maxRange) {
-                return -1;
-            } else if (input == 0) {
-                return 0;
-            } else if (input > maxRange || input < 0) {
-                System.out.println("Invalid input");
-                System.out.print("Input: ");
-                input = -2;
-            }
-        }
-        return input;
-    }
-
-    public void menu(){
-        System.out.println("" +
-                " ______  __ __    ___      ___ ___   ____  _____   ___        _____ __ __   ___   ____  \n" +
-                "|      T|  T  T  /  _]    |   T   T /    T/ ___/  /  _]      / ___/|  T  T /   \\ |    \\ \n" +
-                "|      ||  l  | /  [_     | _   _ |Y  o  (   \\_  /  [_ _____(   \\_ |  l  |Y     Y|  o  )\n" +
-                "l_j  l_j|  _  |Y    _]    |  \\_/  ||     |\\__  TY    _]     |\\__  T|  _  ||  O  ||   _/ \n" +
-                "  |  |  |  |  ||   [_     |   |   ||  _  |/  \\ ||   [_l_____j/  \\ ||  |  ||     ||  |   \n" +
-                "  |  |  |  |  ||     T    |   |   ||  |  |\\    ||     T      \\    ||  |  |l     !|  |   \n" +
-                "  l__j  l__j__jl_____j    l___j___jl__j__j \\___jl_____j       \\___jl__j__j \\___/ l__j   \n" +
-                "                                                                                        ");
-    }
-
-    public void header(){
-        System.out.println("" +
-                "═╔╝║ ║╔═╝  ╔╔ ╔═║╔═╝╔═╝  ╔═╝║ ║╔═║╔═║\n" +
-                " ║ ╔═║╔═╝  ║║║╔═║══║╔═╝═╝══║╔═║║ ║╔═╝\n" +
-                " ╝ ╝ ╝══╝  ╝╝╝╝ ╝══╝══╝  ══╝╝ ╝══╝╝  \n" +
-                "====================================");
-    }
-
-    public void sandwichHeader(){
-        System.out.println("" +
-                "╔═╝╔═║╔═ ╔═ ║║║╝╔═╝║ ║\n" +
-                "══║╔═║║ ║║ ║║║║║║  ╔═║\n" +
-                "══╝╝ ╝╝ ╝══ ══╝╝══╝╝ ╝\n" +
-                "======================");
-    }
-
-    public void chipsHeader(){
-        System.out.println("" +
-                "╔═╝║ ║╝╔═║╔═╝\n" +
-                "║  ╔═║║╔═╝══║\n" +
-                "══╝╝ ╝╝╝  ══╝\n" +
-                "=============");
-    }
-
-    public void drinksHeader(){
-        System.out.println("" +
-                "╔═ ╔═║╝╔═ ║ ║╔═╝\n" +
-                "║ ║╔╔╝║║ ║╔╝ ══║\n" +
-                "══ ╝ ╝╝╝ ╝╝ ╝══╝\n" +
-                "================");
-    }
-
-    public void checkoutHeader(){
-        System.out.println("" +
-                "╔═╝║ ║╔═╝╔═╝║ ║╔═║║ ║═╔╝\n" +
-                "║  ╔═║╔═╝║  ╔╝ ║ ║║ ║ ║ \n" +
-                "══╝╝ ╝══╝══╝╝ ╝══╝══╝ ╝ \n" +
-                "=======================");
-    }
 }
