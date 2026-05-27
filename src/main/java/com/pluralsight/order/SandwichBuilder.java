@@ -3,106 +3,58 @@ package com.pluralsight.order;
 import com.pluralsight.enums.Bread;
 import com.pluralsight.enums.MenuAction;
 import com.pluralsight.enums.Size;
-import com.pluralsight.menu.Sandwich;
 import com.pluralsight.toppings.*;
-import com.pluralsight.ui.UserInterface;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class SandwichBuilder {
 
-    public MenuAction addSandwich(Order o, UserInterface ui) {
-        MenuAction action = MenuAction.CONTINUE;
-
-        while(action == MenuAction.CONTINUE) {
-            List<Topping> allTops = new ArrayList<>();
-            Size size = ui.addSize();
-
-            if (size == null){
-                return MenuAction.EXIT;
+    public Size determineSize(int size){
+        switch (size) {
+            case 1 -> {
+                return Size.SMALL;
             }
-            Bread bread = ui.addBread();
-            if(bread == null){
-                return MenuAction.EXIT;
+            case 2 -> {
+                return Size.MEDIUM;
             }
-            boolean isToasted = ui.isToasted();
-            if(ui.addMeat(allTops,size).equals(MenuAction.EXIT)){
-                return MenuAction.EXIT;
+            case 3 -> {
+                return Size.LARGE;
             }
-            if(ui.addCheese(allTops, size).equals(MenuAction.EXIT)){
-                return MenuAction.EXIT;
-            }
-            if(ui.addToppings(allTops, size).equals(MenuAction.EXIT)){
-                return MenuAction.EXIT;
-            }
-            Sandwich wich = new Sandwich(bread, isToasted, size, allTops);
-            System.out.println(wich);
-            o.addItems(wich);
-            action = MenuAction.BREAK;
-        }
-        return action;
-    }
-
-    public Size determinSize(Scanner scanner){
-        while(true) {
-            int size = caseNumberCheck(scanner);
-
-            switch (size) {
-                case 1 -> {
-                    return Size.SMALL;
-                }
-                case 2 -> {
-                    return Size.MEDIUM;
-                }
-                case 3 -> {
-                    return Size.LARGE;
-                }
-                case 0 -> {
-                    return null;
-                }
-                default -> System.out.println("Invalid Input\nInput: ");
+            default -> {
+                System.out.println("Invalid Input");;
             }
         }
+        return null;
     }
 
-    public Bread determinBread(Scanner scanner){
-        while(true) {
-            int bread = caseNumberCheck(scanner);
-
-            switch (bread) {
-                case 1 -> {
-                    return Bread.WHITE;
-                }
-                case 2 -> {
-                    return Bread.WHEAT;
-                }
-                case 3 -> {
-                    return Bread.RYE;
-                }
-                case 4 -> {
-                    return Bread.WRAP;
-                }
-                case 0 -> {
-                    return null;
-                }
-                default -> System.out.println("Invalid Input");
+    public Bread determineBread(int bread){
+        switch (bread) {
+            case 1 -> {
+                return Bread.WHITE;
             }
+            case 2 -> {
+                return Bread.WHEAT;
+            }
+            case 3 -> {
+                return Bread.RYE;
+            }
+            case 4 -> {
+                return Bread.WRAP;
+            }
+            default -> System.out.println("Invalid Input");
         }
+        return null;
     }
 
-    public MenuAction determineMeat(int meat, List<Topping> allTops, Size size,Scanner scanner){
-        UserInterface ui = new UserInterface();
+
+    public MenuAction determineMeat(int meat, List<Topping> allTops, Size size, boolean hasExtraMeat){
         List<String> meats;
-        boolean hasExtraMeat;
 
         if (meat == -1) {
             return MenuAction.BREAK;
         } else if (meat == 0) {
             return MenuAction.EXIT;
         } else {meats = List.of("Steak", "Ham", "Salami", "Roast Beef", "Chicken", "Bacon");
-            hasExtraMeat = wantExtra(scanner);
             Meat m = new Meat(meats.get(meat - 1), size, hasExtraMeat);
             allTops.add(m);System.out.println("Added!");
         }
@@ -110,9 +62,9 @@ public class SandwichBuilder {
         return MenuAction.CONTINUE;
     }
 
-    public MenuAction determineCheese(int cheese, Size size, List<Topping> allTops, Scanner scanner){
+    public MenuAction determineCheese(int cheese, Size size, List<Topping> allTops, boolean hasExtraCheese ){
         List<String> cheeses;
-        boolean hasExtraCheese;
+
 
         if (cheese == -1) {
             return MenuAction.BREAK;
@@ -120,7 +72,6 @@ public class SandwichBuilder {
             return MenuAction.EXIT;
         } else {
             cheeses = List.of("American", "Provolone", "Cheddar", "Swiss");
-            hasExtraCheese = wantExtra(scanner);
             Cheese c = new Cheese(cheeses.get(cheese - 1), size, hasExtraCheese);
             allTops.add(c);
         }
@@ -170,45 +121,5 @@ public class SandwichBuilder {
         }
 
         return MenuAction.CONTINUE;
-    }
-
-    public boolean wantExtra(Scanner scanner) {
-        scanner.nextLine();
-        System.out.println("Would you like extra?(Y/N)");
-        String input = scanner.nextLine();
-        return (input.equalsIgnoreCase("Y"));
-    }
-
-    public int checkNumbers(int maxRange,Scanner scanner) {
-        int input = -2;
-        while (input < -1) {
-            if (!scanner.hasNextInt()) {
-                scanner.nextLine();
-            } else {
-                input = scanner.nextInt();
-            }
-            if (input == maxRange) {
-                return -1;
-            } else if (input == 0) {
-                return 0;
-            } else if (input > maxRange || input < 0) {
-                System.out.println("Invalid input");
-                System.out.print("Input: ");
-                input = -2;
-            }
-        }
-        return input;
-    }
-
-    public int caseNumberCheck(Scanner scanner){
-        int input;
-        if(!scanner.hasNextInt()){
-            input = -1;
-            scanner.nextLine();
-        } else {
-            input = scanner.nextInt();
-            scanner.nextLine();
-        }
-        return input;
     }
 }

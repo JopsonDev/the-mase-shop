@@ -5,10 +5,12 @@ import com.pluralsight.enums.MenuAction;
 import com.pluralsight.enums.Size;
 import com.pluralsight.menu.Chips;
 import com.pluralsight.menu.Drink;
+import com.pluralsight.menu.Sandwich;
 import com.pluralsight.order.Order;
 import com.pluralsight.order.SandwichBuilder;
 import com.pluralsight.toppings.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -17,14 +19,14 @@ public class UserInterface {
     private final Order order = new Order(1);
     private final SandwichBuilder s = new SandwichBuilder();
 
-    public void display(UserInterface ui){
+    public void display(){
         System.out.println("Welcome!");
 
 
         System.out.println("1) -> Place Order");
         System.out.println("0) -> Quit");
 
-        if(caseNumberCheck() != 1){
+        if(readIntInput() != 1){
             System.out.println("Exiting program: Have a great day!");
             return;
         }
@@ -36,10 +38,10 @@ public class UserInterface {
                 System.out.println("4) -> Checkout");
                 System.out.println("0) -> Quit");
 
-                int input = caseNumberCheck();
+                int input = readIntInput();
 
                 switch (input) {
-                    case 1 -> addItemsSandwiches(ui);
+                    case 1 -> addSandwich();
                     case 2 -> addDrink();
                     case 3 -> addChips();
                     case 4 -> displayOrder();
@@ -52,19 +54,39 @@ public class UserInterface {
             }
         }
 
-    public void addItemsSandwiches(UserInterface ui) {
-        while(true) {
-            MenuAction action = s.addSandwich(order, ui);
+    public MenuAction addSandwich() {
+        MenuAction action = MenuAction.CONTINUE;
+        while(action == MenuAction.CONTINUE) {
+            List<Topping> allTops = new ArrayList<>();
+            Size size = addSize();
 
-            if(action == MenuAction.EXIT){
-                return;
+            if (size == null){
+                return MenuAction.EXIT;
             }
-
-            System.out.println("Add another?(Y/N)");
-            if(scanner.nextLine().equalsIgnoreCase("N")){
-                return;
+            Bread bread = addBread();
+            if(bread == null){
+                return MenuAction.EXIT;
             }
+            boolean isToasted = isToasted();
+            if(addMeat(allTops,size).equals(MenuAction.EXIT)){
+                return MenuAction.EXIT;
+            }
+            if(addCheese(allTops, size).equals(MenuAction.EXIT)){
+                return MenuAction.EXIT;
+            }
+            if(addToppings(allTops, size).equals(MenuAction.EXIT)){
+                return MenuAction.EXIT;
+            }
+            Sandwich wich = new Sandwich(bread, isToasted, size, allTops);
+            System.out.println(wich);
+            order.addItems(wich);
+            action = MenuAction.BREAK;
         }
+        System.out.println("Add another?(Y/N)");
+        if(scanner.nextLine().equalsIgnoreCase("Y")){
+            return MenuAction.CONTINUE;
+        }
+        return action;
     }
 
     public Size addSize() {
@@ -73,9 +95,13 @@ public class UserInterface {
             System.out.println("1) -> 4in  (5.50)");
             System.out.println("2) -> 8in  (7.00)");
             System.out.println("3) -> 12in (8.50)");
-            System.out.println("0) -> Nevermind I dont want a sandwich");
 
-            return s.determinSize(scanner);
+            int choice = readIntInput();
+            Size size = s.determineSize(choice);
+
+            if(size != null){
+                return size;
+            }
         }
     }
 
@@ -86,9 +112,13 @@ public class UserInterface {
             System.out.println("2) -> Wheat");
             System.out.println("3) -> Rye");
             System.out.println("4) -> Wrap");
-            System.out.println("0) -> Never mind I dont want a sandwich");
 
-            return s.determinBread(scanner);
+            int choice = readIntInput();
+            Bread bread = s.determineBread(choice);
+
+            if(bread != null){
+                return bread;
+            }
         }
     }
 
@@ -113,8 +143,12 @@ public class UserInterface {
             System.out.println("7) -> No more meat");
             System.out.println("0) -> Never mind I dont want a sandwich");
 
-            int meat = s.checkNumbers(7,scanner);
-            action = s.determineMeat(meat, allTops, size, scanner);
+            boolean extra = false;
+            int meat = validateMenuChoice(7);
+            if(meat != -1 && meat != 0) {
+                extra = wantExtra();
+            }
+            action = s.determineMeat(meat, allTops, size, extra);
         }
         return action;
     }
@@ -133,10 +167,19 @@ public class UserInterface {
             System.out.println("5) -> No more cheese");
             System.out.println("0) -> Never mind I dont want a sandwich");
 
-            int cheese = s.checkNumbers(5, scanner);
-            action = s.determineCheese(cheese, size, allTops, scanner);
+            boolean extra = false;
+            int cheese = validateMenuChoice(5);
+            if(cheese != -1 && cheese != 0) {
+                extra = wantExtra();
+            }
+            action = s.determineCheese(cheese, size, allTops, extra);
         }
         return action;
+    }
+    public boolean wantExtra() {
+        System.out.println("Would you like extra?(Y/N)");
+        String input = scanner.nextLine();
+        return (input.equalsIgnoreCase("Y"));
     }
 
     public MenuAction addToppings(List<Topping> allTops, Size size){
@@ -155,7 +198,7 @@ public class UserInterface {
             System.out.println(" 9) -> Mushrooms");
             System.out.println("10) -> No more toppings");
             System.out.println(" 0) -> Never mind I dont want a sandwich");
-            int rT = s.checkNumbers(10, scanner);
+            int rT = validateMenuChoice(10);
             action = s.determineRegularToppings(rT, size, allTops);
             if (action == MenuAction.EXIT){
                 return action;
@@ -174,7 +217,7 @@ public class UserInterface {
             System.out.println("7) -> No more sauce");
             System.out.println("0) -> Never mind I dont want a sandwich");
 
-            int sauces = s.checkNumbers(7, scanner);
+            int sauces = validateMenuChoice(7);
             action = s.determineSauces(sauces, size, allTops);
             if (action == MenuAction.EXIT){
                 return action;
@@ -189,7 +232,7 @@ public class UserInterface {
             System.out.println("3) -> No more sauce");
             System.out.println("0) -> Never mind I dont want a sandwich");
 
-            int sides = s.checkNumbers(3, scanner);
+            int sides = validateMenuChoice(3);
 
             action = s.determineSides(sides, size, allTops);
             if (action == MenuAction.EXIT){
@@ -213,7 +256,7 @@ public class UserInterface {
             System.out.println("3) -> Large");
             System.out.println("0) -> Nevermind I dont want a drink");
 
-            int size = caseNumberCheck();
+            int size = readIntInput();
 
             sodaSize = "";
             switch (size) {
@@ -249,7 +292,7 @@ public class UserInterface {
         }
     }
 
-    public int caseNumberCheck(){
+    public int readIntInput(){
         int input;
         if(!scanner.hasNextInt()){
             input = -1;
@@ -257,6 +300,29 @@ public class UserInterface {
         } else {
             input = scanner.nextInt();
             scanner.nextLine();
+        }
+        return input;
+    }
+
+    public int validateMenuChoice(int maxRange) {
+        int input = -2;
+        while (input < -1) {
+
+            if (!scanner.hasNextInt()) {
+                scanner.nextLine();
+            } else {
+                input = scanner.nextInt();
+                scanner.nextLine();
+            }
+            if (input == maxRange) {
+                return -1;
+            } else if (input == 0) {
+                return 0;
+            } else if (input > maxRange || input < 0) {
+                System.out.println("Invalid input");
+                System.out.print("Input: ");
+                input = -2;
+            }
         }
         return input;
     }
