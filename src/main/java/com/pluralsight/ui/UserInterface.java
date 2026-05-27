@@ -64,7 +64,7 @@ public class UserInterface {
         MenuAction action = MenuAction.CONTINUE;
         while(action == MenuAction.CONTINUE) {
             List<Topping> allTops = new ArrayList<>();
-            Size size = addSize();
+            Size size = addSize("$5.50/$7.00/$8.50");
 
             if (size == Size.QUIT){
                 return MenuAction.EXIT;
@@ -95,12 +95,13 @@ public class UserInterface {
         return action;
     }
 
-    public Size addSize() {
+    public Size addSize(String prices) {
         while (true) {
             System.out.println("Please select your size");
-            System.out.println("1) -> 4in  (5.50)");
-            System.out.println("2) -> 8in  (7.00)");
-            System.out.println("3) -> 12in (8.50)");
+            System.out.println(prices);
+            System.out.println("1) -> 4in");
+            System.out.println("2) -> 8in");
+            System.out.println("3) -> 12in");
             System.out.println("0) -> Never mind I dont want a sandwich");
 
             int choice = readIntInput();
@@ -260,9 +261,10 @@ public class UserInterface {
 
         while (sodaSize.isEmpty()) {
             System.out.println("Please select a size");
-            System.out.println("1) -> Small ($2.00)");
-            System.out.println("2) -> Medium ($2.50)");
-            System.out.println("3) -> Large ($3.00)");
+            System.out.println("$2.00/$2.50/$3.00");
+            System.out.println("1) -> Small");
+            System.out.println("2) -> Medium");
+            System.out.println("3) -> Large");
             System.out.println("0) -> Nevermind I dont want a drink");
 
             int size = readIntInput();
@@ -306,7 +308,6 @@ public class UserInterface {
     public void signatureSandwich(){
         sandwichHeader();
         System.out.println("Please Select your sandwich");
-        System.out.println("$7.25/$10.50/$13.75");
         System.out.println("1) -> BLT");
         System.out.println("2) -> CheeseSteak");
         System.out.println("3) -> Chicken Wrap");
@@ -319,7 +320,7 @@ public class UserInterface {
             return;
         }
 
-        Size size = addSize();
+        Size size = addSize("$7.25/$10.50/$13.75");
         boolean isToasted = isToasted();
         System.out.println("Extra Meat: $1.00/$2.00/$3.00");
         boolean hasExtraMeat = wantExtra("meat");
