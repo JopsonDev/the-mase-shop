@@ -21,6 +21,7 @@ public class UserInterface {
     private final Header h = new Header();
     private final Utilities u = new Utilities();
 
+    //Prints of the start of program and first two menus
     public void display(){
         h.menu();
 
@@ -61,6 +62,7 @@ public class UserInterface {
             }
         }
 
+    //gathers input from user from other methods and builds a sandwich
     public MenuAction addSandwich() {
         h.sandwichHeader();
         MenuAction action = MenuAction.CONTINUE;
@@ -102,62 +104,41 @@ public class UserInterface {
         return action;
     }
 
+    //ask user what size they want
     public Size addSize(String prices) {
         while (true) {
-            System.out.println("Please select your size");
-            System.out.println(prices);
-            System.out.println("1) -> 4in");
-            System.out.println("2) -> 8in");
-            System.out.println("3) -> 12in");
-            System.out.println("0) -> Never mind I dont want a sandwich");
+            displaySizeMenu(prices);
 
             int choice = u.readIntInput(scanner);
             Size size = s.determineSize(choice);
 
-            if(size != null){
-                return size;
-            }
+            return size;
         }
     }
 
+    //ask the user what bread they want
     public Bread addBread() {
         while (true) {
-            System.out.println("Please select your bread");
-            System.out.println("1) -> White");
-            System.out.println("2) -> Wheat");
-            System.out.println("3) -> Rye");
-            System.out.println("4) -> Wrap");
-            System.out.println("0) -> Never mind I dont want a sandwich");
+            displayBreadMenu();
 
             int choice = u.readIntInput(scanner);
             Bread bread = s.determineBread(choice);
 
-            if(bread != null){
-                return bread;
-            }
+            return bread;
         }
     }
 
+    //determines if toasted
     public boolean isToasted(){
         System.out.println("Would you like that toasted(Y/N)");
         return scanner.nextLine().equalsIgnoreCase("Y");
     }
 
+    //gathers what meat toppings the user wants
     public MenuAction addMeat(List<Topping> allTops, Size size) {
         MenuAction action = MenuAction.CONTINUE;
         while (action == MenuAction.CONTINUE) {
-            System.out.println("Premium Toppings");
-            System.out.println("Meats: $1.00/$2.00/$3.00");
-            System.out.println("Extra: $.50/$1.00/$1.50");
-            System.out.println("Please select your meat");
-            System.out.println("1) -> Steak");
-            System.out.println("2) -> Ham");
-            System.out.println("3) -> Salami");
-            System.out.println("4) -> Roast Beef");
-            System.out.println("5) -> Chicken");
-            System.out.println("6) -> Bacon");
-            System.out.println("7) -> No more meat");
-            System.out.println("0) -> Never mind I dont want a sandwich");
+            displayMeatMenu();
 
             boolean extra = false;
             int meat = u.validateMenuChoice(7, scanner);
@@ -169,19 +150,11 @@ public class UserInterface {
         return action;
     }
 
+    //gathers what cheese toppings the user wants
     public MenuAction addCheese(List<Topping> allTops, Size size) {
         MenuAction action = MenuAction.CONTINUE;
         while (action == MenuAction.CONTINUE) {
-            System.out.println("Premium Toppings");
-            System.out.println("Cheese: $.75/$1.50/$2.25");
-            System.out.println("Extra: $.30/$.60/$.90");
-            System.out.println("Please select your cheese");
-            System.out.println("1) -> American");
-            System.out.println("2) -> Provolone");
-            System.out.println("3) -> Cheddar");
-            System.out.println("4) -> Swiss");
-            System.out.println("5) -> No more cheese");
-            System.out.println("0) -> Never mind I dont want a sandwich");
+            displayCheeseMenu();
 
             boolean extra = false;
             int cheese = u.validateMenuChoice(5, scanner);
@@ -192,28 +165,21 @@ public class UserInterface {
         }
         return action;
     }
+
+    //checks to see if the user wants extra of whatever String is entered
     public boolean wantExtra(String topping) {
         System.out.println("Would you like extra " + topping + "?(Y/N)");
         String input = scanner.nextLine();
         return (input.equalsIgnoreCase("Y"));
     }
 
+    //goes through regular toppings, sauces, and sides to see what the user wants
     public MenuAction addToppings(List<Topping> allTops, Size size){
         MenuAction action = MenuAction.CONTINUE;
         while (action == MenuAction.CONTINUE) {
-            System.out.println("Regular Toppings");
-            System.out.println("Please select your toppings");
-            System.out.println(" 1) -> Lettuce");
-            System.out.println(" 2) -> Peppers");
-            System.out.println(" 3) -> Onions");
-            System.out.println(" 4) -> Tomatoes");
-            System.out.println(" 5) -> Jalapeños");
-            System.out.println(" 6) -> Cucumbers");
-            System.out.println(" 7) -> Pickles");
-            System.out.println(" 8) -> Guacamole");
-            System.out.println(" 9) -> Mushrooms");
-            System.out.println("10) -> No more toppings");
-            System.out.println(" 0) -> Never mind I dont want a sandwich");
+
+            displayRegularToppings();
+
             int rT = u.validateMenuChoice(10, scanner);
             action = s.determineRegularToppings(rT, size, allTops);
             if (action == MenuAction.EXIT){
@@ -222,16 +188,8 @@ public class UserInterface {
         }
         action = MenuAction.CONTINUE;
         while (action == MenuAction.CONTINUE) {
-            System.out.println("Sauces");
-            System.out.println("Please select your sauce");
-            System.out.println("1) -> Mayo");
-            System.out.println("2) -> Mustard");
-            System.out.println("3) -> Ketchup");
-            System.out.println("4) -> Ranch");
-            System.out.println("5) -> Thousand islands");
-            System.out.println("6) -> Vinaigrette");
-            System.out.println("7) -> No more sauce");
-            System.out.println("0) -> Never mind I dont want a sandwich");
+
+            displaySauceMenu();
 
             int sauces = u.validateMenuChoice(7, scanner);
             action = s.determineSauces(sauces, size, allTops);
@@ -241,12 +199,8 @@ public class UserInterface {
         }
         action = MenuAction.CONTINUE;
         while (action == MenuAction.CONTINUE) {
-            System.out.println("Sides");
-            System.out.println("Please select your side");
-            System.out.println("1) -> Au Jus");
-            System.out.println("2) -> Sauce");
-            System.out.println("3) -> No more sauce");
-            System.out.println("0) -> Never mind I dont want a sandwich");
+
+            displaySidesMenu();
 
             int sides = u.validateMenuChoice(3, scanner);
 
@@ -258,6 +212,7 @@ public class UserInterface {
         return action;
     }
 
+    //sees what drink the user wants
     public void addDrink() {
         h.drinksHeader();
         String sodaSize = "";
@@ -290,6 +245,7 @@ public class UserInterface {
         order.addItems(new Drink(flavor, sodaSize));
     }
 
+    //sees what chips the use wants
     public void addChips(){
         h.chipsHeader();
         System.out.println("Chips: $1.50");
@@ -300,6 +256,7 @@ public class UserInterface {
         order.addItems(new Chips(flavor));
     }
 
+    //shows the user a file receipt where they can choose to pay and check out then clears cart
     public void checkout(){
         h.checkoutHeader();
         order.printOrder();
@@ -312,31 +269,122 @@ public class UserInterface {
         }
     }
 
+    //gives the user some options of premade orders
     public void signatureSandwich(){
-        h.sandwichHeader();
-        System.out.println("Please Select your sandwich");
-        System.out.println("1) -> BLT");
-        System.out.println("2) -> CheeseSteak");
-        System.out.println("3) -> Chicken Wrap");
-        System.out.println("0) -> Never mind I dont want a sandwich");
+        while(true) {
+            h.sandwichHeader();
+            System.out.println("Please Select your sandwich");
+            System.out.println("1) -> BLT");
+            System.out.println("2) -> CheeseSteak");
+            System.out.println("3) -> Chicken Wrap");
+            System.out.println("0) -> Never mind I dont want a sandwich");
 
-        int input = scanner.nextInt();
-        scanner.nextLine();
+            int input = u.readIntInput(scanner);
 
-        if(input == 0){
-            return;
+            if (input <= 3 && input > 0) {
+                Size size = addSize("$7.25/$10.50/$13.75");
+                if(size == Size.QUIT){
+                    return;
+                }
+                boolean isToasted = isToasted();
+                System.out.println("Extra Meat: $1.00/$2.00/$3.00");
+                boolean hasExtraMeat = wantExtra("meat");
+                System.out.println("Extra Cheese: $0.30/$0.60/$0.90");
+                boolean hasExtraCheese = wantExtra("cheese");
+
+                order.addItems(s.signaturePick(input, order, size, isToasted, hasExtraMeat, hasExtraCheese));
+                return;
+            } else if (input == 0) {
+                return;
+            } else {
+                System.out.println("Invalid input");
+            }
         }
-
-        Size size = addSize("$7.25/$10.50/$13.75");
-        boolean isToasted = isToasted();
-        System.out.println("Extra Meat: $1.00/$2.00/$3.00");
-        boolean hasExtraMeat = wantExtra("meat");
-        System.out.println("Extra Cheese: $0.30/$0.60/$0.90");
-        boolean hasExtraCheese = wantExtra("cheese");
-
-        order.addItems(s.signaturePick(input, order, size, isToasted, hasExtraMeat, hasExtraCheese));
-
+    }
+    
+    //Responsible for displaying all menus
+    public void displaySizeMenu(String prices){
+        System.out.println("Please select your size");
+        System.out.println(prices);
+        System.out.println("1) -> 4in");
+        System.out.println("2) -> 8in");
+        System.out.println("3) -> 12in");
+        System.out.println("0) -> Nevermind I dont want a sandwich");
     }
 
+    public void displayBreadMenu(){
+        System.out.println("Please select your bread");
+        System.out.println("1) -> White");
+        System.out.println("2) -> Wheat");
+        System.out.println("3) -> Rye");
+        System.out.println("4) -> Wrap");
+        System.out.println("0) -> Never mind I dont want a sandwich");
+    }
+
+    public void displayCheeseMenu(){
+        System.out.println("Premium Toppings");
+        System.out.println("Cheese: $.75/$1.50/$2.25");
+        System.out.println("Extra: $.30/$.60/$.90");
+        System.out.println("Please select your cheese");
+        System.out.println("1) -> American");
+        System.out.println("2) -> Provolone");
+        System.out.println("3) -> Cheddar");
+        System.out.println("4) -> Swiss");
+        System.out.println("5) -> No more cheese");
+        System.out.println("0) -> Never mind I dont want a sandwich");
+    }
+
+    public void displayRegularToppings(){
+        System.out.println("Regular Toppings");
+        System.out.println("Please select your toppings");
+        System.out.println(" 1) -> Lettuce");
+        System.out.println(" 2) -> Peppers");
+        System.out.println(" 3) -> Onions");
+        System.out.println(" 4) -> Tomatoes");
+        System.out.println(" 5) -> Jalapeños");
+        System.out.println(" 6) -> Cucumbers");
+        System.out.println(" 7) -> Pickles");
+        System.out.println(" 8) -> Guacamole");
+        System.out.println(" 9) -> Mushrooms");
+        System.out.println("10) -> No more toppings");
+        System.out.println(" 0) -> Never mind I dont want a sandwich");
+    }
+
+    public void displaySauceMenu(){
+        System.out.println("Sauces");
+        System.out.println("Please select your sauce");
+        System.out.println("1) -> Mayo");
+        System.out.println("2) -> Mustard");
+        System.out.println("3) -> Ketchup");
+        System.out.println("4) -> Ranch");
+        System.out.println("5) -> Thousand islands");
+        System.out.println("6) -> Vinaigrette");
+        System.out.println("7) -> No more sauce");
+        System.out.println("0) -> Never mind I dont want a sandwich");
+    }
+
+    public void displaySidesMenu(){
+        System.out.println("Sides");
+        System.out.println("Please select your side");
+        System.out.println("1) -> Au Jus");
+        System.out.println("2) -> Sauce");
+        System.out.println("3) -> No more sauce");
+        System.out.println("0) -> Never mind I dont want a sandwich");
+    }
+
+    public void displayMeatMenu(){
+        System.out.println("Premium Toppings");
+        System.out.println("Meats: $1.00/$2.00/$3.00");
+        System.out.println("Extra: $.50/$1.00/$1.50");
+        System.out.println("Please select your meat");
+        System.out.println("1) -> Steak");
+        System.out.println("2) -> Ham");
+        System.out.println("3) -> Salami");
+        System.out.println("4) -> Roast Beef");
+        System.out.println("5) -> Chicken");
+        System.out.println("6) -> Bacon");
+        System.out.println("7) -> No more meat");
+        System.out.println("0) -> Never mind I dont want a sandwich");
+    }
 
 }

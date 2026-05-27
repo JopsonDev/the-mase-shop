@@ -11,7 +11,7 @@ import java.util.List;
 public class SandwichBuilder {
 
     public Sandwich signaturePick(int input, Order o, Size size, boolean isToasted, boolean eM, boolean eC){
-        while(true) {
+        while(true) { //infinite loop
             switch (input) {
                 case 1 -> {
                     return o.bltOrder(size, isToasted, eM, eC);
