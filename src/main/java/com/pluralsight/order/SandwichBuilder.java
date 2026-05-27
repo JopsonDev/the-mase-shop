@@ -25,10 +25,7 @@ public class SandwichBuilder {
                 case 0 -> {
                     return null;
                 }
-                default -> {
-                    System.out.println("Invalid Input");
-
-                }
+                default -> System.out.println("Invalid Input");
             }
         }
     }
