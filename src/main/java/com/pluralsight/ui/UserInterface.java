@@ -35,7 +35,8 @@ public class UserInterface {
                 System.out.println("1) -> Add Sandwich");
                 System.out.println("2) -> Add Drink");
                 System.out.println("3) -> Add Chips");
-                System.out.println("4) -> Checkout");
+                System.out.println("4) -> Signature Sandwiches");
+                System.out.println("5) -> Checkout");
                 System.out.println("0) -> Quit");
 
                 int input = readIntInput();
@@ -44,7 +45,8 @@ public class UserInterface {
                     case 1 -> addSandwich();
                     case 2 -> addDrink();
                     case 3 -> addChips();
-                    case 4 -> displayOrder();
+                    case 4 -> signatureSandwich();
+                    case 5 -> displayOrder();
                     case 0 -> {
                         scanner.close();
                         return;
@@ -146,7 +148,7 @@ public class UserInterface {
             boolean extra = false;
             int meat = validateMenuChoice(7);
             if(meat != -1 && meat != 0) {
-                extra = wantExtra();
+                extra = wantExtra("meat");
             }
             action = s.determineMeat(meat, allTops, size, extra);
         }
@@ -170,14 +172,14 @@ public class UserInterface {
             boolean extra = false;
             int cheese = validateMenuChoice(5);
             if(cheese != -1 && cheese != 0) {
-                extra = wantExtra();
+                extra = wantExtra("cheese");
             }
             action = s.determineCheese(cheese, size, allTops, extra);
         }
         return action;
     }
-    public boolean wantExtra() {
-        System.out.println("Would you like extra?(Y/N)");
+    public boolean wantExtra(String topping) {
+        System.out.println("Would you like extra " + topping + "?(Y/N)");
         String input = scanner.nextLine();
         return (input.equalsIgnoreCase("Y"));
     }
@@ -290,6 +292,28 @@ public class UserInterface {
             order.saveReceipt();
             order.clearOrder();
         }
+    }
+
+    public void signatureSandwich(){
+        System.out.println("Please Select your sandwich");
+        System.out.println("$7.25/$10.50/$13.75");
+        System.out.println("1) -> BLT");
+        System.out.println("2) -> CheeseSteak");
+        System.out.println("3) -> Chicken Wrap");
+        System.out.println("0) -> Never mind I dont want a sandwich");
+
+        int input = scanner.nextInt();
+        scanner.nextLine();
+
+        Size size = addSize();
+        boolean isToasted = isToasted();
+        System.out.println("Extra Meat: $1.00/$2.00/$3.00");
+        boolean hasExtraMeat = wantExtra("meat");
+        System.out.println("Extra Cheese: $0.30/$0.60/$0.90");
+        boolean hasExtraCheese = wantExtra("cheese");
+
+        order.addItems(s.signaturePick(input, order, size, isToasted, hasExtraMeat, hasExtraCheese));
+
     }
 
     public int readIntInput(){
