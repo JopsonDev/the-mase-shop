@@ -3,7 +3,8 @@ package com.pluralsight.enums;
 public enum Size {
     SMALL(5.50, "Small"),
     MEDIUM(7.00, "Medium"),
-    LARGE(8.50, "Large");
+    LARGE(8.50, "Large"),
+    QUIT(0,"Quit");
 
     private final double price;
     private final String displayName;

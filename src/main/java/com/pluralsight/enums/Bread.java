@@ -4,7 +4,8 @@ public enum Bread {
     WHITE("White"),
     WHEAT("Wheat"),
     RYE("Rye"),
-    WRAP("Wrap");
+    WRAP("Wrap"),
+    QUIT("Quit");
 
     private final String displayName;
 

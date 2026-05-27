@@ -9,10 +9,11 @@ import java.io.FileWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ReceiptHandler {
 
-    public void fileReceipt(List<IChargable> order, int x){
+    public void fileReceipt(Order order, int x){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
         String dateTime = LocalDateTime.now().format(formatter);
 
@@ -27,12 +28,9 @@ public class ReceiptHandler {
             BufferedWriter writer = new BufferedWriter(new FileWriter(receiptFile, true));
 
             writer.write("****RECEIPT****\n");
-            writer.write("Order ID: " + x);
+            writer.write("Order ID: " + order.getIdNumber() + "\n");
             writer.write(dateTime + "\n");
-
-
-            writer.write(order.toString());
-            writer.newLine();
+            writer.write(order.getItems().stream().map(IChargable::toString).collect(Collectors.joining("\n")));
 
             writer.close();
         } catch (Exception e) {

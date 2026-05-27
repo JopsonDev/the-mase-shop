@@ -21,6 +21,14 @@ public class Order {
         this.items = new ArrayList<>();
     }
 
+    public int getIdNumber() {
+        return idNumber;
+    }
+
+    public List<IChargable> getItems() {
+        return items;
+    }
+
     public void addItems(IChargable item){
         items.add(item);
     }
@@ -35,9 +43,9 @@ public class Order {
         items.clear();
     }
 
-    public void saveReceipt(){
+    public void saveReceipt(Order order){
         ReceiptHandler r = new ReceiptHandler();
-        r.fileReceipt(items, idNumber);
+        r.fileReceipt(order, idNumber);
     }
 
     public void printOrder(){

@@ -9,13 +9,13 @@ public class Program {
     }
     //place holder ID made for files
     //add special sandwich menu DONE
-    //app design
+    //app design DONE could be better
     //receipt writer acting up didnt write full file
     //need to add Enums to Class digram
     //need to add SandwichBuilder to class digram
 
     //need overhaul on sandwich builder and need to fix it DONE
-    //need to add quit options to size and bread
+    //need to add quit options to size and bread DONE
     //drink doesnt price FIXED
     //0 doesn't exit signature sandwiches FIXED
 

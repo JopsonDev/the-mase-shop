@@ -66,11 +66,11 @@ public class UserInterface {
             List<Topping> allTops = new ArrayList<>();
             Size size = addSize();
 
-            if (size == null){
+            if (size == Size.QUIT){
                 return MenuAction.EXIT;
             }
             Bread bread = addBread();
-            if(bread == null){
+            if(bread == Bread.QUIT){
                 return MenuAction.EXIT;
             }
             boolean isToasted = isToasted();
@@ -101,6 +101,7 @@ public class UserInterface {
             System.out.println("1) -> 4in  (5.50)");
             System.out.println("2) -> 8in  (7.00)");
             System.out.println("3) -> 12in (8.50)");
+            System.out.println("0) -> Never mind I dont want a sandwich");
 
             int choice = readIntInput();
             Size size = s.determineSize(choice);
@@ -118,6 +119,7 @@ public class UserInterface {
             System.out.println("2) -> Wheat");
             System.out.println("3) -> Rye");
             System.out.println("4) -> Wrap");
+            System.out.println("0) -> Never mind I dont want a sandwich");
 
             int choice = readIntInput();
             Bread bread = s.determineBread(choice);
@@ -296,7 +298,7 @@ public class UserInterface {
         System.out.println("Finish and pay?(Y/N)");
         String input = scanner.nextLine();
         if(input.equalsIgnoreCase("Y")){
-            order.saveReceipt();
+            order.saveReceipt(order);
             order.clearOrder();
         }
     }

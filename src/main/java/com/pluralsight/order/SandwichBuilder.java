@@ -41,6 +41,9 @@ public class SandwichBuilder {
             case 3 -> {
                 return Size.LARGE;
             }
+            case 0 -> {
+                return Size.QUIT;
+            }
             default -> {
                 System.out.println("Invalid Input");;
             }
@@ -61,6 +64,9 @@ public class SandwichBuilder {
             }
             case 4 -> {
                 return Bread.WRAP;
+            }
+            case 0 -> {
+                return Bread.QUIT;
             }
             default -> System.out.println("Invalid Input");
         }
