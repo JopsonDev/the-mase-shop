@@ -49,12 +49,14 @@ Follow these steps to get your application running within IntelliJ IDEA:
 
 ## Demo
 
-Include screenshots or GIFs that show your application in action. Use tools like [Giphy Capture](https://giphy.com/apps/giphycapture) to record a GIF of your application.
+App Demo 
 
-![Application Screenshot](![ClassDiagram.png](img/ClassDiagram.png))
-![Application Screenshot](path/to/your/screenshot.png)
-![Application Screenshot](path/to/your/screenshot.png)
-![Application Screenshot](path/to/your/screenshot.png)
+![Class Diagram](img/ClassDiagram.png)
+![Menu](img/Menu.png)
+![Build a Sandwich](img/BuildSandwich.png)
+![Drinks and Chips](img/DrinksChips.png)
+![Signature Sandwichs](img/SignatureSandwich.png)
+![Checkout](img/Checkout.png)
 
 ## Future Work
 - Admin controls viewing and managing receipts
@@ -70,6 +72,7 @@ List resources such as tutorials, articles, and documentation:
 - https://docs.oracle.com/javase/tutorial/java/javaOO/enum.html
 - [Enum tutorial](https://www.youtube.com/watch?v=wq9SJb8VeyM)
 - [Streams Information](https://www.baeldung.com/java-8-streams)
+- [Making Class Diagrams](https://www.youtube.com/watch?v=OuO49oIzV10)
 
 ## Team Members
 
