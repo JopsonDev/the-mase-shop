@@ -47,7 +47,6 @@ public class Sandwich implements IChargable{
         return price;
     }
 
-
     @Override
     public String toString() {
         String toast;

@@ -13,6 +13,8 @@ import java.util.stream.Collectors;
 
 public class ReceiptHandler {
 
+
+    //Creates a folder if one doesn't already exist then adds a file
     public void fileReceipt(Order order, int x){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
         String dateTime = LocalDateTime.now().format(formatter);

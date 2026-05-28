@@ -33,6 +33,7 @@ public class Order {
         items.add(item);
     }
 
+    //Goes through each item and gathers the price and adds them together
     public double calculatePrice(){
         double price = 0;
         price += items.stream().mapToDouble(IChargable::getPrice).sum();
@@ -58,6 +59,7 @@ public class Order {
         System.out.println(items.stream().map(IChargable::toString).collect(Collectors.joining("\n")));
     }
 
+    //Signature sandwiches object creation
     public Sandwich bltOrder(Size size, boolean toasted, boolean extraMeat, boolean extraCheese){
         List<Topping> toppings = new ArrayList<>();
         toppings.add(new RegularTopping("Tomato", size));

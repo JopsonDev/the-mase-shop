@@ -72,7 +72,7 @@ public class SandwichBuilder {
         return null;
     }
 
-
+    //takes an int and decides what meat will be added to list same will all toppings
     public MenuAction determineMeat(int meat, List<Topping> allTops, Size size, boolean hasExtraMeat){
         List<String> meats;
 

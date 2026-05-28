@@ -3,6 +3,8 @@ package com.pluralsight.ui;
 import java.util.Scanner;
 
 public class Utilities {
+
+    //gathers users input for switch cases and checks for any errors and returns a value
     public int readIntInput(Scanner scanner){
         int input;
         if(!scanner.hasNextInt()){
@@ -15,6 +17,8 @@ public class Utilities {
         return input;
     }
 
+    //takes user input for selecting from list and will loop till an acceptable input is received
+    //will return -1 in order to break out of toppings loops
     public int validateMenuChoice(int maxRange, Scanner scanner) {
         int input = -2;
         while (input < -1) {
