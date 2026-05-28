@@ -106,26 +106,27 @@ public class UserInterface {
 
     //ask user what size they want
     public Size addSize(String prices) {
-        while (true) {
+        Size size = null;
+        while (size == null) {
             displaySizeMenu(prices);
 
             int choice = u.readIntInput(scanner);
-            Size size = s.determineSize(choice);
+            size = s.determineSize(choice);
 
-            return size;
         }
+        return size;
     }
 
     //ask the user what bread they want
     public Bread addBread() {
-        while (true) {
+        Bread bread = null;
+        while (bread == null) {
             displayBreadMenu();
 
             int choice = u.readIntInput(scanner);
-            Bread bread = s.determineBread(choice);
-
-            return bread;
+            bread = s.determineBread(choice);
         }
+        return bread;
     }
 
     //determines if toasted
@@ -136,6 +137,7 @@ public class UserInterface {
 
     //gathers what meat toppings the user wants
     public MenuAction addMeat(List<Topping> allTops, Size size) {
+        resetAction();
         while (action == MenuAction.CONTINUE) {
             displayMeatMenu();
 
@@ -151,6 +153,7 @@ public class UserInterface {
 
     //gathers what cheese toppings the user wants
     public MenuAction addCheese(List<Topping> allTops, Size size) {
+        resetAction();
         while (action == MenuAction.CONTINUE) {
             displayCheeseMenu();
 
@@ -173,6 +176,7 @@ public class UserInterface {
 
     //goes through regular toppings, sauces, and sides to see what the user wants
     public MenuAction addToppings(List<Topping> allTops, Size size){
+        resetAction();
         while (action == MenuAction.CONTINUE) {
 
             displayRegularToppings();
@@ -183,7 +187,7 @@ public class UserInterface {
                 return action;
             }
         }
-        action = MenuAction.CONTINUE;
+        resetAction();
         while (action == MenuAction.CONTINUE) {
 
             displaySauceMenu();
@@ -194,7 +198,7 @@ public class UserInterface {
                 return action;
             }
         }
-        action = MenuAction.CONTINUE;
+        resetAction();
         while (action == MenuAction.CONTINUE) {
 
             displaySidesMenu();
@@ -385,6 +389,10 @@ public class UserInterface {
         System.out.println("6) -> Bacon");
         System.out.println("7) -> No more meat");
         System.out.println("0) -> Never mind I dont want a sandwich");
+    }
+
+    public void resetAction(){
+        action = MenuAction.CONTINUE;
     }
 
 }
