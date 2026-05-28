@@ -20,6 +20,7 @@ public class UserInterface {
     private final SandwichBuilder s = new SandwichBuilder();
     private final Header h = new Header();
     private final Utilities u = new Utilities();
+    private MenuAction action = MenuAction.CONTINUE;
 
     //Prints of the start of program and first two menus
     public void display(){
@@ -65,17 +66,16 @@ public class UserInterface {
     //gathers input from user from other methods and builds a sandwich
     public MenuAction addSandwich() {
         h.sandwichHeader();
-        MenuAction action = MenuAction.CONTINUE;
         while(action == MenuAction.CONTINUE) {
             List<Topping> allTops = new ArrayList<>();
             Size size = addSize("$5.50/$7.00/$8.50");
 
-            if (size == Size.QUIT){
+            if (size == Size.NONE){
                 return MenuAction.EXIT;
             }
 
             Bread bread = addBread();
-            if(bread == Bread.QUIT){
+            if(bread == Bread.NONE){
                 return MenuAction.EXIT;
             }
 
@@ -136,7 +136,6 @@ public class UserInterface {
 
     //gathers what meat toppings the user wants
     public MenuAction addMeat(List<Topping> allTops, Size size) {
-        MenuAction action = MenuAction.CONTINUE;
         while (action == MenuAction.CONTINUE) {
             displayMeatMenu();
 
@@ -152,7 +151,6 @@ public class UserInterface {
 
     //gathers what cheese toppings the user wants
     public MenuAction addCheese(List<Topping> allTops, Size size) {
-        MenuAction action = MenuAction.CONTINUE;
         while (action == MenuAction.CONTINUE) {
             displayCheeseMenu();
 
@@ -175,7 +173,6 @@ public class UserInterface {
 
     //goes through regular toppings, sauces, and sides to see what the user wants
     public MenuAction addToppings(List<Topping> allTops, Size size){
-        MenuAction action = MenuAction.CONTINUE;
         while (action == MenuAction.CONTINUE) {
 
             displayRegularToppings();
@@ -260,9 +257,12 @@ public class UserInterface {
     public void checkout(){
         h.checkoutHeader();
         order.printOrder();
+
         System.out.println("$" + String.format("%,.2f", order.calculatePrice()));
+
         System.out.println("Finish and pay?(Y/N)");
         String input = scanner.nextLine();
+
         if(input.equalsIgnoreCase("Y")){
             order.saveReceipt(order);
             order.clearOrder();
@@ -283,7 +283,7 @@ public class UserInterface {
 
             if (input <= 3 && input > 0) {
                 Size size = addSize("$7.25/$10.50/$13.75");
-                if(size == Size.QUIT){
+                if(size == Size.NONE){
                     return;
                 }
                 boolean isToasted = isToasted();

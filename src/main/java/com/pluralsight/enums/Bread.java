@@ -5,7 +5,7 @@ public enum Bread {
     WHEAT("Wheat"),
     RYE("Rye"),
     WRAP("Wrap"),
-    QUIT("Quit");
+    NONE("No Bread");
 
     private final String displayName;
 

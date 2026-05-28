@@ -9,10 +9,6 @@ public class Drink implements IChargable{
         this.size = size;
     }
 
-    public String getFlavor() {
-        return flavor;
-    }
-
     public String getSize() {
         return size;
     }

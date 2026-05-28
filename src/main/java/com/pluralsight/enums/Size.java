@@ -4,7 +4,7 @@ public enum Size {
     SMALL(5.50, "Small"),
     MEDIUM(7.00, "Medium"),
     LARGE(8.50, "Large"),
-    QUIT(0,"Quit");
+    NONE(0,"No Size");
 
     private final double price;
     private final String displayName;
