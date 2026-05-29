@@ -70,25 +70,25 @@ public class UserInterface {
             List<Topping> allTops = new ArrayList<>();
             Size size = addSize("$5.50/$7.00/$8.50");
 
-            if (size == Size.NONE){
+            if (size == Size.NONE) {
                 return MenuAction.EXIT;
             }
 
             Bread bread = addBread();
-            if(bread == Bread.NONE){
+            if (bread == Bread.NONE) {
                 return MenuAction.EXIT;
             }
 
             boolean isToasted = isToasted();
-            if(addMeat(allTops,size).equals(MenuAction.EXIT)){
+            if (addMeat(allTops, size).equals(MenuAction.EXIT)) {
                 return MenuAction.EXIT;
             }
 
-            if(addCheese(allTops, size).equals(MenuAction.EXIT)){
+            if (addCheese(allTops, size).equals(MenuAction.EXIT)) {
                 return MenuAction.EXIT;
             }
 
-            if(addToppings(allTops, size).equals(MenuAction.EXIT)){
+            if (addToppings(allTops, size).equals(MenuAction.EXIT)) {
                 return MenuAction.EXIT;
             }
 
@@ -96,10 +96,11 @@ public class UserInterface {
             System.out.println(wich);
             order.addItems(wich);
             action = MenuAction.BREAK;
-        }
-        System.out.println("Add another?(Y/N)");
-        if(scanner.nextLine().equalsIgnoreCase("Y")){
-            return MenuAction.CONTINUE;
+
+            System.out.println("Add another?(Y/N)");
+            if (scanner.nextLine().equalsIgnoreCase("Y")) {
+                action = MenuAction.CONTINUE;
+            }
         }
         return action;
     }
