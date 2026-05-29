@@ -260,17 +260,22 @@ public class UserInterface {
 
     //shows the user a file receipt where they can choose to pay and check out then clears cart
     public void checkout(){
-        h.checkoutHeader();
-        order.printOrder();
+        if(!order.getItems().isEmpty()) {
+            h.checkoutHeader();
+            order.printOrder();
 
-        System.out.println("$" + String.format("%,.2f", order.calculatePrice()));
+            System.out.println("$" + String.format("%,.2f", order.calculatePrice()));
 
-        System.out.println("Finish and pay?(Y/N)");
-        String input = scanner.nextLine();
+            System.out.println("Finish and pay?(Y/N)");
+            String input = scanner.nextLine();
 
-        if(input.equalsIgnoreCase("Y")){
-            order.saveReceipt(order);
-            order.clearOrder();
+            if (input.equalsIgnoreCase("Y")) {
+                order.saveReceipt(order);
+                order.clearOrder();
+            }
+        } else {
+            h.checkoutHeader();
+            System.out.println("Cart empty\n");
         }
     }
 
